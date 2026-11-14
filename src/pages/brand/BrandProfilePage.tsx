@@ -6,6 +6,7 @@ import { Button } from '../../components/ui/Button';
 import { Input, Textarea } from '../../components/ui/Input';
 import { Skeleton } from '../../components/ui/EmptyState';
 import toast from 'react-hot-toast';
+import { Sparkles } from 'lucide-react';
 
 export const BrandProfilePage: React.FC = () => {
   const { user } = useAuth();
@@ -56,8 +57,8 @@ export const BrandProfilePage: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-4 max-w-2xl">
-        <Skeleton className="h-10 w-48" />
-        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-12 w-64 rounded-2xl" />
+        <Skeleton className="h-72 w-full rounded-2xl" />
       </div>
     );
   }
@@ -65,16 +66,22 @@ export const BrandProfilePage: React.FC = () => {
   if (!profile) return null;
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-2xl space-y-8 w-full">
       {/* Header */}
-      <div className="pb-4 border-b border-stone-200">
-        <h1 className="text-2xl font-serif font-bold text-stone-900">Brand Profile Settings</h1>
-        <p className="text-xs text-stone-500 mt-1">
-          Information shared with creators when you send collaboration proposals.
+      <div className="pb-6 border-b border-[#D4C2AE]/60">
+        <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] mb-1">
+          <Sparkles className="w-3 h-3 text-[#B49A70]" />
+          05 / Brand Identity
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#171514] tracking-tight">
+          Brand Profile Settings
+        </h1>
+        <p className="text-xs text-[#5A534F] mt-1">
+          Information shared with creators when you send collaboration proposals and campaign briefs.
         </p>
       </div>
 
-      <form onSubmit={handleSave} className="space-y-4 bg-white border border-stone-200 p-6 rounded-xl shadow-xs">
+      <form onSubmit={handleSave} className="space-y-5 bg-white border border-[#D4C2AE] p-7 rounded-2xl shadow-luxury">
         <Input
           label="Brand / Company Name *"
           value={profile.brand_name}
@@ -116,11 +123,10 @@ export const BrandProfilePage: React.FC = () => {
           rows={3}
         />
 
-        <div className="flex justify-end pt-2">
+        <div className="flex justify-end pt-3 border-t border-[#D4C2AE]/50">
           <Button
             type="submit"
             loading={saving}
-            className="bg-brand-900 hover:bg-black text-white"
           >
             Save Brand Details
           </Button>

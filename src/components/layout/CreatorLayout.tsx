@@ -10,6 +10,7 @@ import {
   Mail,
   User,
   LogOut,
+  Sparkles,
 } from 'lucide-react';
 
 export const CreatorLayout: React.FC = () => {
@@ -24,37 +25,47 @@ export const CreatorLayout: React.FC = () => {
   const navItems = [
     { to: '/creator/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/creator/deals', label: 'Collaborations', icon: Briefcase },
-    { to: '/creator/finance', label: 'Finance', icon: IndianRupee },
-    { to: '/creator/enquiries', label: 'Enquiries', icon: Mail },
-    { to: '/creator/contracts', label: 'Contracts', icon: FileText },
-    { to: '/creator/profile', label: 'Profile', icon: User },
+    { to: '/creator/finance', label: 'Finance & Payouts', icon: IndianRupee },
+    { to: '/creator/enquiries', label: 'Brand Enquiries', icon: Mail },
+    { to: '/creator/contracts', label: 'AI Contracts', icon: FileText },
+    { to: '/creator/profile', label: 'Media Kit', icon: User },
   ];
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#faf9f5]">
-      {/* Desktop Left Sidebar */}
-      <aside className="hidden md:flex md:w-64 flex-col bg-white border-r border-stone-200 min-h-screen p-4 justify-between select-none">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#FAF7F2]">
+      {/* Desktop Left Sidebar: High-Contrast Deep Ink with Gold Detailing */}
+      <aside className="hidden md:flex md:w-64 lg:w-72 flex-col bg-[#171514] text-[#FAF7F2] border-r border-[#282422] min-h-screen p-5 justify-between select-none shadow-luxury-lg z-20">
         <div>
           {/* Brand Logo & Portal Tag */}
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-stone-100">
-            <div className="flex items-center gap-2.5">
-              <span className="w-8 h-8 rounded-lg bg-creator-900 flex items-center justify-center text-white font-serif font-bold text-lg shadow-xs">
-                C
-              </span>
-              <div>
-                <span className="font-serif font-bold tracking-tight text-stone-900 text-lg block leading-none">
-                  Creatix
+          <div className="pb-5 mb-6 border-b border-[#282422]">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#B49A70] to-[#7A6440] flex items-center justify-center text-[#171514] font-serif font-bold text-xl shadow-luxury">
+                  C
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-creator-900/80 block mt-0.5">
-                  Creator Workspace
-                </span>
+                <div>
+                  <span className="font-serif font-bold tracking-tight text-white text-xl block leading-none">
+                    Creatix
+                  </span>
+                  <span className="text-[10px] font-medium tracking-[0.18em] text-[#B49A70] uppercase block mt-1">
+                    Editorial Studio
+                  </span>
+                </div>
               </div>
             </div>
-            <SampleDataBadge />
+            <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#282422]/70 text-[10px]">
+              <span className="text-[#A9927A] uppercase tracking-wider font-semibold">Creator Workspace</span>
+              <SampleDataBadge className="bg-[#282422] text-[#B49A70] border-[#3D3835]" />
+            </div>
+          </div>
+
+          {/* Section Kicker */}
+          <div className="px-3 mb-2 text-[10px] uppercase font-bold tracking-[0.2em] text-[#7B726C]">
+            Navigation
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-1">
+          <nav className="space-y-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -62,15 +73,24 @@ export const CreatorLayout: React.FC = () => {
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all ${
+                    `flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium tracking-wide transition-all duration-150 ${
                       isActive
-                        ? 'bg-creator-900 text-white shadow-xs'
-                        : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/80'
+                        ? 'bg-[#282422] text-[#FAF7F2] border border-[#B49A70]/40 shadow-xs'
+                        : 'text-[#A9927A] hover:text-[#FAF7F2] hover:bg-[#1E1B1A]'
                     }`
                   }
                 >
-                  <Icon className="w-4 h-4" />
-                  <span>{item.label}</span>
+                  {({ isActive }) => (
+                    <>
+                      <div className="flex items-center gap-3">
+                        <Icon className={`w-4 h-4 transition-colors ${isActive ? 'text-[#B49A70]' : 'text-[#7B726C]'}`} />
+                        <span className={isActive ? 'font-semibold text-white' : ''}>{item.label}</span>
+                      </div>
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#B49A70] shadow-[0_0_8px_#B49A70]" />
+                      )}
+                    </>
+                  )}
                 </NavLink>
               );
             })}
@@ -78,22 +98,26 @@ export const CreatorLayout: React.FC = () => {
         </div>
 
         {/* User Card & Sign Out */}
-        <div className="pt-4 border-t border-stone-200">
-          <div className="flex items-center justify-between p-2 rounded-lg bg-surface-100 border border-stone-200/60 mb-2">
-            <div className="truncate pr-2">
-              <p className="text-xs font-bold text-stone-900 truncate">
-                {user?.name || 'Aanya Sharma'}
-              </p>
-              <p className="text-[10px] text-stone-500 truncate">{user?.email}</p>
+        <div className="pt-4 border-t border-[#282422]">
+          <div className="p-3 rounded-xl bg-[#1E1B1A] border border-[#282422] mb-3">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#B49A70] flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-[#B49A70]" />
+                Creator Verified
+              </span>
+              <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#B49A70]/20 text-[#D4C2AE] border border-[#B49A70]/30 uppercase">
+                Pro
+              </span>
             </div>
-            <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wider">
-              Creator
-            </span>
+            <p className="text-xs font-serif font-bold text-white truncate">
+              {user?.name || 'Aanya Sharma'}
+            </p>
+            <p className="text-[11px] text-[#7B726C] truncate mt-0.5 font-mono">{user?.email}</p>
           </div>
 
           <button
             onClick={handleSignOut}
-            className="flex items-center gap-2 w-full px-3 py-2 text-xs font-medium text-stone-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+            className="flex items-center gap-2.5 w-full px-3.5 py-2 text-xs font-medium text-[#7B726C] hover:text-[#FAF7F2] hover:bg-[#1E1B1A] rounded-xl transition-colors"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Sign Out</span>
@@ -102,28 +126,28 @@ export const CreatorLayout: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-6">
+      <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-8">
         {/* Mobile Header */}
-        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-stone-200 sticky top-0 z-30">
-          <div className="flex items-center gap-2">
-            <span className="w-7 h-7 rounded-md bg-creator-900 flex items-center justify-center text-white font-serif font-bold text-base shadow-xs">
+        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#171514] text-[#FAF7F2] border-b border-[#282422] sticky top-0 z-30 shadow-md">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 rounded-lg bg-[#B49A70] flex items-center justify-center text-[#171514] font-serif font-bold text-base shadow-xs">
               C
             </span>
-            <span className="font-serif font-bold tracking-tight text-stone-900 text-base">
+            <span className="font-serif font-bold tracking-tight text-white text-base">
               Creatix
             </span>
           </div>
-          <SampleDataBadge />
+          <SampleDataBadge className="bg-[#282422] text-[#B49A70] border-[#3D3835]" />
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+        <main className="flex-1 p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto w-full">
           <Outlet />
         </main>
       </div>
 
       {/* Mobile Bottom Tab Bar */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-stone-200 flex justify-around items-center h-16 z-40 px-2 shadow-lg">
+      <nav className="md:hidden fixed bottom-0 inset-x-0 bg-[#171514] border-t border-[#282422] flex justify-around items-center h-16 z-40 px-2 shadow-2xl">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -131,13 +155,13 @@ export const CreatorLayout: React.FC = () => {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-[10px] font-medium transition-colors ${
-                  isActive ? 'text-creator-900 font-bold' : 'text-stone-500'
+                `flex flex-col items-center justify-center min-w-[50px] min-h-[44px] py-1 text-[10px] font-medium transition-colors ${
+                  isActive ? 'text-[#B49A70] font-bold' : 'text-[#7B726C]'
                 }`
               }
             >
               <Icon className="w-4 h-4 mb-0.5" />
-              <span>{item.label}</span>
+              <span className="truncate max-w-[54px]">{item.label.split(' ')[0]}</span>
             </NavLink>
           );
         })}

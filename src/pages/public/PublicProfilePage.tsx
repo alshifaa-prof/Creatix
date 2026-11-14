@@ -33,10 +33,10 @@ export const PublicProfilePage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#faf9f5] flex items-center justify-center p-4">
+      <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center p-4">
         <div className="w-full max-w-xl space-y-4">
-          <Skeleton className="h-12 w-48 mx-auto" />
-          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-12 w-48 mx-auto rounded-2xl" />
+          <Skeleton className="h-64 w-full rounded-2xl" />
         </div>
       </div>
     );
@@ -45,19 +45,22 @@ export const PublicProfilePage: React.FC = () => {
   // PRD §5.2 FR-PROF-4: Share link works only when is_public = true
   if (!data || !data.creator.is_public) {
     return (
-      <div className="min-h-screen bg-[#faf9f5] flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-12 h-12 rounded-full bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-500 mb-4">
-          <Lock className="w-6 h-6" />
+      <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center p-6 text-center text-[#171514]">
+        <div className="w-14 h-14 rounded-2xl bg-[#F3EAE0] border border-[#D4C2AE] flex items-center justify-center text-[#7B726C] mb-4 shadow-luxury">
+          <Lock className="w-6 h-6 text-[#B49A70]" />
         </div>
-        <h1 className="text-xl font-bold font-serif text-stone-900 mb-1">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B49A70] block mb-1">
+          Restricted Access
+        </span>
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171514] mb-2">
           This profile is private
         </h1>
-        <p className="text-xs text-stone-500 max-w-sm mb-6">
+        <p className="text-xs text-[#5A534F] max-w-sm mb-6 leading-relaxed">
           The creator has not published their media kit publicly yet, or the profile link has expired.
         </p>
         <Link
           to="/"
-          className="text-xs font-semibold text-creator-900 hover:underline"
+          className="text-xs font-semibold px-4 py-2 rounded-xl bg-[#171514] text-[#FAF7F2] hover:bg-[#282422] transition-colors shadow-luxury"
         >
           Return to Creatix Home
         </Link>
@@ -68,63 +71,63 @@ export const PublicProfilePage: React.FC = () => {
   const { creator } = data;
 
   return (
-    <div className="min-h-screen bg-[#faf9f5] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto space-y-6">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#171514] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-8">
         {/* Top Bar */}
-        <div className="flex items-center justify-between pb-4 border-b border-stone-200">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="w-7 h-7 rounded-md bg-creator-900 flex items-center justify-center text-white font-serif font-bold text-base shadow-xs">
+        <div className="flex items-center justify-between pb-5 border-b border-[#D4C2AE]/60">
+          <Link to="/" className="flex items-center gap-3 group">
+            <span className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#B49A70] to-[#7A6440] flex items-center justify-center text-[#171514] font-serif font-bold text-lg shadow-luxury group-hover:scale-105 transition-transform">
               C
             </span>
-            <span className="font-serif font-bold tracking-tight text-stone-900 text-lg">
+            <span className="font-serif font-bold tracking-tight text-[#171514] text-xl">
               Creatix
             </span>
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <SampleDataBadge />
             <Link
               to="/login"
-              className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-stone-300 bg-white hover:bg-stone-50 text-stone-700"
+              className="text-xs font-semibold px-4 py-2 rounded-xl border border-[#D4C2AE] bg-white hover:bg-[#FAF7F2] text-[#171514] shadow-xs transition-colors"
             >
               Sign In
             </Link>
           </div>
         </div>
 
-        {/* Profile Pitch Header */}
-        <div className="bg-white border border-stone-200 rounded-xl p-6 sm:p-8 relative">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+        {/* Profile Pitch Header Card */}
+        <div className="bg-white border border-[#D4C2AE] rounded-3xl p-6 sm:p-10 shadow-luxury relative overflow-hidden">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8">
             {creator.profile_image_url ? (
               <img
                 src={creator.profile_image_url}
                 alt={creator.display_name || 'Creator'}
-                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-2 border-stone-200 shadow-sm"
+                className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-[#D4C2AE] shadow-luxury"
               />
             ) : (
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-surface-200 flex items-center justify-center text-stone-700 font-serif font-bold text-3xl border border-stone-300">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-[#F3EAE0] flex items-center justify-center text-[#171514] font-serif font-bold text-4xl border border-[#D4C2AE] shadow-luxury">
                 {(creator.display_name || 'C')[0]}
               </div>
             )}
 
             <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
-                <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight">
+              <div className="flex flex-wrap items-center gap-2.5 mb-2">
+                <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#171514] tracking-tight">
                   {creator.display_name || data.profile.name}
                 </h1>
-                <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#F4ECE1] text-[#7A6440] border border-[#DEC6A5]">
                   {creator.niche}
                 </span>
               </div>
 
               {creator.location && (
-                <p className="text-xs text-stone-500 flex items-center gap-1 mb-3">
-                  <MapPin className="w-3.5 h-3.5" />
+                <p className="text-xs text-[#7B726C] flex items-center gap-1.5 mb-3 font-medium">
+                  <MapPin className="w-3.5 h-3.5 text-[#B49A70]" />
                   {creator.location}
                 </p>
               )}
 
               {creator.bio && (
-                <p className="text-sm text-stone-700 leading-relaxed max-w-xl">
+                <p className="text-sm text-[#5A534F] leading-relaxed max-w-2xl font-normal">
                   {creator.bio}
                 </p>
               )}
@@ -132,17 +135,17 @@ export const PublicProfilePage: React.FC = () => {
           </div>
 
           {/* Social Links */}
-          <div className="mt-6 pt-6 border-t border-stone-100 flex flex-wrap gap-3">
+          <div className="mt-8 pt-6 border-t border-[#D4C2AE]/50 flex flex-wrap gap-3">
             {creator.instagram_url && (
               <a
                 href={creator.instagram_url}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 bg-surface-50 text-stone-800 hover:bg-stone-100 text-xs font-medium transition-colors"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[#D4C2AE] bg-[#FAF7F2] text-[#171514] hover:bg-[#F3EAE0] text-xs font-semibold transition-colors"
               >
-                <Instagram className="w-3.5 h-3.5 text-rose-600" />
+                <Instagram className="w-4 h-4 text-[#A85F48]" />
                 Instagram Profile
-                <ArrowUpRight className="w-3 h-3 text-stone-400" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#7B726C]" />
               </a>
             )}
 
@@ -151,79 +154,88 @@ export const PublicProfilePage: React.FC = () => {
                 href={creator.youtube_url}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 bg-surface-50 text-stone-800 hover:bg-stone-100 text-xs font-medium transition-colors"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[#D4C2AE] bg-[#FAF7F2] text-[#171514] hover:bg-[#F3EAE0] text-xs font-semibold transition-colors"
               >
-                <Youtube className="w-3.5 h-3.5 text-red-600" />
+                <Youtube className="w-4 h-4 text-[#A85F48]" />
                 YouTube Channel
-                <ArrowUpRight className="w-3 h-3 text-stone-400" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#7B726C]" />
               </a>
             )}
           </div>
         </div>
 
         {/* Audience Reach Cards */}
-        <div className="bg-white border border-stone-200 rounded-xl p-6 sm:p-8 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-              Audience Reach & Demographics
-            </h2>
+        <div className="bg-white border border-[#D4C2AE] rounded-3xl p-6 sm:p-10 space-y-4 shadow-luxury">
+          <div className="flex items-center justify-between pb-3 border-b border-[#D4C2AE]/50">
+            <div>
+              <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+                Audience Scale
+              </span>
+              <h2 className="text-xl font-serif font-bold text-[#171514]">
+                Reach & Demographics
+              </h2>
+            </div>
             <SelfReportedBadge />
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-            <div className="p-4 rounded-lg bg-surface-50 border border-stone-200/80">
-              <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+            <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#D4C2AE]">
+              <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
                 Instagram
               </span>
-              <span className="text-xl sm:text-2xl font-bold font-mono-numbers text-stone-900 block mt-1">
+              <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1">
                 {(creator.follower_count || 0).toLocaleString('en-IN')}
               </span>
-              <span className="text-[10px] text-stone-400 block mt-0.5">Followers</span>
+              <span className="text-[10px] text-[#7B726C] block mt-1">Followers</span>
             </div>
 
-            <div className="p-4 rounded-lg bg-surface-50 border border-stone-200/80">
-              <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+            <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#D4C2AE]">
+              <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
                 YouTube
               </span>
-              <span className="text-xl sm:text-2xl font-mono-numbers font-bold text-stone-900 block mt-1">
+              <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1">
                 {(creator.subscriber_count || 0).toLocaleString('en-IN')}
               </span>
-              <span className="text-[10px] text-stone-400 block mt-0.5">Subscribers</span>
+              <span className="text-[10px] text-[#7B726C] block mt-1">Subscribers</span>
             </div>
 
-            <div className="p-4 rounded-lg bg-surface-50 border border-stone-200/80">
-              <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+            <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#D4C2AE]">
+              <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
                 Avg. Views
               </span>
-              <span className="text-xl sm:text-2xl font-mono-numbers font-bold text-stone-900 block mt-1">
+              <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1">
                 {(creator.average_views || 0).toLocaleString('en-IN')}
               </span>
-              <span className="text-[10px] text-stone-400 block mt-0.5">Per video / reel</span>
+              <span className="text-[10px] text-[#7B726C] block mt-1">Per video / reel</span>
             </div>
 
-            <div className="p-4 rounded-lg bg-surface-50 border border-stone-200/80">
-              <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+            <div className="p-5 rounded-2xl bg-[#F3EAE0] border border-[#D4C2AE]">
+              <span className="text-[10px] font-bold text-[#7A6440] uppercase tracking-[0.18em] block">
                 Engagement
               </span>
-              <span className="text-xl sm:text-2xl font-mono-numbers font-bold text-emerald-800 block mt-1">
+              <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1">
                 {creator.engagement_rate || 0}%
               </span>
-              <span className="text-[10px] text-stone-400 block mt-0.5">Avg. interaction</span>
+              <span className="text-[10px] text-[#7B726C] block mt-1">Avg. interaction</span>
             </div>
           </div>
         </div>
 
-        {/* Footer Pitch */}
-        <div className="p-6 rounded-xl bg-creator-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Footer Pitch Section */}
+        <div className="p-7 sm:p-9 rounded-3xl bg-[#171514] text-[#FAF7F2] border border-[#282422] shadow-luxury-lg flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#B49A70]/10 rounded-full blur-2xl pointer-events-none" />
           <div>
-            <h3 className="font-serif font-bold text-lg">Interested in partnering?</h3>
-            <p className="text-xs text-stone-200 mt-0.5">
-              Sign in as a Brand to send a collaboration enquiry and negotiate deliverables.
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B49A70] block mb-1">
+              Brand Partnerships
+            </span>
+            <h3 className="font-serif font-bold text-2xl text-white">Interested in partnering?</h3>
+            <p className="text-xs text-[#A9927A] mt-1 max-w-md">
+              Sign in as a Brand to send a collaboration enquiry, propose commercial fees, and review contract deliverables.
             </p>
           </div>
           <Link
             to="/signup"
-            className="px-4 py-2 rounded-lg bg-white text-creator-900 font-semibold text-xs hover:bg-stone-100 transition-colors shrink-0 shadow-xs"
+            className="px-6 py-3 rounded-xl bg-[#F3EAE0] text-[#171514] font-semibold text-xs hover:bg-[#EAE1D6] transition-colors shrink-0 shadow-luxury border border-[#D4C2AE]"
           >
             Send Collaboration Enquiry
           </Link>

@@ -8,9 +8,9 @@ export const SampleDataBadge: React.FC<{ className?: string }> = ({ className = 
   return (
     <span
       title="Running in local mock mode with realistic sample records"
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-900 border border-amber-200/80 shadow-xs ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#F3EAE0] text-[#7A6440] border border-[#D4C2AE] shadow-xs tracking-wide ${className}`}
     >
-      <Database className="w-3 h-3 text-amber-700" />
+      <Database className="w-3 h-3 text-[#B49A70]" />
       <span>Sample data</span>
     </span>
   );

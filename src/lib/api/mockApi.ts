@@ -19,6 +19,7 @@ import {
   AANYA_USER_ID,
   KAYA_BRAND_USER_ID,
 } from './mockData';
+import { analyzeContractWithGemini } from '../gemini';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -521,7 +522,7 @@ export class MockCreatixApi implements CreatixApi {
     return db.contracts.find((c) => c.id === id) || null;
   }
 
-  async uploadContract(creatorId: string, file: File): Promise<ContractDocument> {
+  async uploadContract(creatorId: string, file: File, extractedText?: string): Promise<ContractDocument> {
     await delay(300); // Simulate upload latency
     const db = getStoredMockData();
 
@@ -531,7 +532,7 @@ export class MockCreatixApi implements CreatixApi {
       collaboration_id: null,
       file_path: `mock/contracts/${file.name}`,
       original_filename: file.name,
-      extracted_text: `Simulated text extracted from ${file.name}`,
+      extracted_text: extractedText || `Text extracted from ${file.name}`,
       ai_summary: null,
       ai_flags: [],
       extracted_terms: {},
@@ -544,9 +545,32 @@ export class MockCreatixApi implements CreatixApi {
     return newDoc;
   }
 
-  async analyzeContract(contractId: string, _manualText?: string): Promise<ExtractedTerms> {
-    // 1.5s delay to make AI loading state visible per User Rule 4
-    await delay(1500);
+  async analyzeContract(contractId: string, manualText?: string): Promise<ExtractedTerms> {
+    const db = getStoredMockData();
+    const doc = db.contracts.find((c) => c.id === contractId);
+
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    const textToAnalyze = manualText || doc?.extracted_text;
+
+    // If Gemini API Key is configured and there's meaningful text, use REAL Gemini 2.5 Flash
+    if (apiKey && apiKey !== 'your_gemini_api_key_here' && textToAnalyze && textToAnalyze.trim().length > 30) {
+      try {
+        const realTerms = await analyzeContractWithGemini(textToAnalyze, apiKey);
+        if (doc) {
+          doc.ai_summary = realTerms.summary;
+          doc.ai_flags = realTerms.flags;
+          doc.extracted_terms = realTerms;
+          saveStoredMockData(db);
+        }
+        return realTerms;
+      } catch (geminiError: any) {
+        console.error('Gemini 2.5 Flash analysis error, falling back to mock:', geminiError);
+        throw geminiError;
+      }
+    }
+
+    // Fallback: 1.5s delay to make AI loading state visible with realistic mock data
+    await delay(1200);
 
     const realisticTerms: ExtractedTerms = {
       summary:
@@ -577,8 +601,6 @@ export class MockCreatixApi implements CreatixApi {
       ],
     };
 
-    const db = getStoredMockData();
-    const doc = db.contracts.find((c) => c.id === contractId);
     if (doc) {
       doc.ai_summary = realisticTerms.summary;
       doc.ai_flags = realisticTerms.flags;

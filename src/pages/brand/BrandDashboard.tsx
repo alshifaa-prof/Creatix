@@ -10,6 +10,8 @@ import {
   Bookmark,
   CheckCircle2,
   Clock,
+  Sparkles,
+  ArrowUpRight,
 } from 'lucide-react';
 
 export const BrandDashboard: React.FC = () => {
@@ -46,126 +48,139 @@ export const BrandDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="space-y-6 max-w-5xl">
-        <Skeleton className="h-10 w-48" />
+      <div className="space-y-6 w-full">
+        <Skeleton className="h-12 w-64 rounded-2xl" />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
+          <Skeleton className="h-32 rounded-2xl" />
+          <Skeleton className="h-32 rounded-2xl" />
+          <Skeleton className="h-32 rounded-2xl" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-8 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#D4C2AE]/60">
         <div>
-          <h1 className="text-2xl font-serif font-bold text-stone-900">
+          <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] mb-1">
+            <Sparkles className="w-3 h-3 text-[#B49A70]" />
+            01 / Brand Campaign HQ
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#171514] tracking-tight">
             Brand Campaign Hub
           </h1>
-          <p className="text-xs text-stone-500 mt-0.5">
-            Discover creators, shortlist talent, and track responses to your collaboration proposals.
+          <p className="text-xs text-[#5A534F] mt-1">
+            Discover verified creator talent, manage shortlist rosters, and track proposal negotiation outcomes.
           </p>
         </div>
 
         <Link
           to="/brand/discover"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-900 text-white font-semibold text-xs hover:bg-black transition-colors shadow-xs"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#171514] text-[#FAF7F2] font-semibold text-xs hover:bg-[#282422] transition-colors shadow-luxury border border-[#282422]"
         >
-          <Compass className="w-3.5 h-3.5" />
+          <Compass className="w-4 h-4 text-[#B49A70]" />
           <span>Discover Creators</span>
         </Link>
       </div>
 
       {/* Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 bg-white border border-stone-200 rounded-xl shadow-xs flex flex-col justify-between">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        {/* Shortlist Card */}
+        <div className="p-6 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury flex flex-col justify-between hover:border-[#B49A70] transition-colors">
           <div>
-            <div className="flex items-center justify-between text-[11px] font-semibold text-stone-500 uppercase tracking-wider">
-              <span>Shortlisted Creators</span>
-              <Bookmark className="w-4 h-4 text-amber-600" />
+            <div className="flex items-center justify-between text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em]">
+              <span>Shortlisted Talent</span>
+              <Bookmark className="w-4 h-4 text-[#B49A70]" />
             </div>
-            <span className="text-3xl font-bold font-mono-numbers text-stone-900 block mt-2">
+            <span className="text-3xl sm:text-4xl font-serif font-bold font-mono-numbers text-[#171514] block mt-2">
               {shortlistCount}
             </span>
           </div>
           <Link
             to="/brand/shortlist"
-            className="text-xs font-semibold text-brand-900 hover:underline mt-4 flex items-center gap-1"
+            className="text-xs font-semibold text-[#171514] hover:text-[#B49A70] mt-4 flex items-center gap-1 transition-colors"
           >
-            View Shortlist →
+            View Shortlist <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="p-5 bg-white border border-stone-200 rounded-xl shadow-xs flex flex-col justify-between">
+        {/* Accepted Proposals Card */}
+        <div className="p-6 bg-[#171514] text-[#FAF7F2] border border-[#282422] rounded-2xl shadow-luxury-lg flex flex-col justify-between relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-[#B49A70]/10 rounded-full blur-2xl pointer-events-none group-hover:bg-[#B49A70]/20 transition-all" />
           <div>
-            <div className="flex items-center justify-between text-[11px] font-semibold text-stone-500 uppercase tracking-wider">
+            <div className="flex items-center justify-between text-[10px] font-bold text-[#B49A70] uppercase tracking-[0.18em]">
               <span>Accepted Proposals</span>
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <CheckCircle2 className="w-4 h-4 text-[#B49A70]" />
             </div>
-            <span className="text-3xl font-bold font-mono-numbers text-emerald-800 block mt-2">
+            <span className="text-3xl sm:text-4xl font-serif font-bold font-mono-numbers text-white block mt-2">
               {acceptedCount}
             </span>
           </div>
           <Link
             to="/brand/enquiries"
-            className="text-xs font-semibold text-brand-900 hover:underline mt-4 flex items-center gap-1"
+            className="text-xs font-semibold text-[#D4C2AE] hover:text-white mt-4 flex items-center gap-1 transition-colors"
           >
-            Review Statuses →
+            Review Statuses <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="p-5 bg-white border border-stone-200 rounded-xl shadow-xs flex flex-col justify-between">
+        {/* Awaiting Response Card */}
+        <div className="p-6 bg-[#F3EAE0] border border-[#D4C2AE] rounded-2xl shadow-luxury flex flex-col justify-between hover:border-[#B49A70] transition-colors">
           <div>
-            <div className="flex items-center justify-between text-[11px] font-semibold text-stone-500 uppercase tracking-wider">
+            <div className="flex items-center justify-between text-[10px] font-bold text-[#7A6440] uppercase tracking-[0.18em]">
               <span>Awaiting Response</span>
-              <Clock className="w-4 h-4 text-stone-400" />
+              <Clock className="w-4 h-4 text-[#7A6440]" />
             </div>
-            <span className="text-3xl font-bold font-mono-numbers text-stone-900 block mt-2">
+            <span className="text-3xl sm:text-4xl font-serif font-bold font-mono-numbers text-[#171514] block mt-2">
               {pendingCount}
             </span>
           </div>
-          <span className="text-[10px] text-stone-400 mt-4 block">Sent enquiries</span>
+          <span className="text-[10px] text-[#7B726C] mt-4 block">Sent enquiries</span>
         </div>
       </div>
 
       {/* Sent Enquiries Summary Table */}
-      <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-xs">
-        <div className="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-            Recent Collaboration Proposals
-          </h2>
+      <div className="bg-white border border-[#D4C2AE] rounded-2xl p-6 sm:p-7 shadow-luxury">
+        <div className="flex items-center justify-between pb-3 border-b border-[#D4C2AE]/50 mb-4">
+          <div>
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Recent Activity
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514]">
+              Recent Collaboration Proposals
+            </h2>
+          </div>
           <Link
             to="/brand/enquiries"
-            className="text-xs font-semibold text-brand-900 hover:underline"
+            className="text-xs font-semibold text-[#171514] hover:text-[#B49A70] transition-colors"
           >
             All Sent Enquiries →
           </Link>
         </div>
 
         {enquiries.length === 0 ? (
-          <p className="text-xs text-stone-500 py-6 text-center">
+          <p className="text-xs text-[#7B726C] py-8 text-center italic">
             No proposals sent yet. Explore the creator directory to send your first campaign brief.
           </p>
         ) : (
-          <div className="divide-y divide-stone-100">
+          <div className="divide-y divide-[#D4C2AE]/40">
             {enquiries.slice(0, 5).map((enq) => (
-              <div key={enq.id} className="py-3 flex items-center justify-between text-xs">
+              <div key={enq.id} className="py-3.5 flex items-center justify-between text-xs hover:bg-[#FAF7F2] px-2 rounded-lg transition-colors">
                 <div>
-                  <p className="font-bold text-stone-900">{enq.campaign_title}</p>
-                  <p className="text-[11px] text-stone-500 font-mono-numbers">
+                  <p className="font-serif font-bold text-sm text-[#171514]">{enq.campaign_title}</p>
+                  <p className="text-[11px] text-[#7B726C] font-mono mt-0.5">
                     Fee: {formatINR(enq.offered_payment)} · Sent {formatDate(enq.created_at)}
                   </p>
                 </div>
                 <span
-                  className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
                     enq.status === 'accepted'
-                      ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                      ? 'bg-[#E2F1E9] text-[#1E4936] border-[#B7DAC7]'
                       : enq.status === 'rejected'
-                      ? 'bg-rose-50 text-rose-700 border-rose-200'
-                      : 'bg-amber-50 text-amber-800 border-amber-200'
+                      ? 'bg-[#FAF3F1] text-[#A85F48] border-[#E7C2B9]'
+                      : 'bg-[#F4ECE1] text-[#7A6440] border-[#DEC6A5]'
                   }`}
                 >
                   {enq.status}

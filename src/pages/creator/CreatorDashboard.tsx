@@ -16,7 +16,9 @@ import { formatINR, formatDate } from '../../lib/format';
 import { MonthlyTrendChart } from '../../components/charts/MonthlyTrendChart';
 import { Skeleton } from '../../components/ui/EmptyState';
 import {
-  Calendar,
+  Sparkles,
+  ArrowUpRight,
+  Plus,
 } from 'lucide-react';
 
 interface UpcomingDeadlineItem {
@@ -78,8 +80,6 @@ export const CreatorDashboard: React.FC = () => {
   const monthlyTrends = calculateMonthlyTrends(records);
 
   // Compute upcoming deadlines per PRD §5.8 FR-DASH-2
-  // Next 5 submission/publishing deadlines from today onward for non-completed, non-cancelled deals.
-  // Highlight overdue (red) and within 3 days (amber).
   const todayStr = new Date().toISOString().slice(0, 10);
   const todayTime = new Date(todayStr).getTime();
 
@@ -170,51 +170,57 @@ export const CreatorDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="space-y-6 max-w-6xl">
-        <Skeleton className="h-10 w-48" />
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
+      <div className="space-y-6 w-full">
+        <Skeleton className="h-12 w-64" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <Skeleton className="h-32 rounded-2xl" />
+          <Skeleton className="h-32 rounded-2xl" />
+          <Skeleton className="h-32 rounded-2xl" />
+          <Skeleton className="h-32 rounded-2xl" />
+          <Skeleton className="h-32 rounded-2xl" />
         </div>
-        <Skeleton className="h-72 w-full" />
+        <Skeleton className="h-80 w-full rounded-2xl" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 max-w-6xl">
+    <div className="space-y-8 w-full">
       {/* Welcome & Quick Actions Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#D4C2AE]/60">
         <div>
-          <h1 className="text-2xl font-serif font-bold text-stone-900">
+          <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] mb-1">
+            <Sparkles className="w-3 h-3 text-[#B49A70]" />
+            01 / Executive Overview
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#171514] tracking-tight">
             Welcome back, {user?.name?.split(' ')[0] || 'Creator'}
           </h1>
-          <p className="text-xs text-stone-500 mt-0.5">
-            Overview of your active brand partnerships, pipeline receivables, and monthly profits.
+          <p className="text-xs text-[#5A534F] mt-1">
+            Real-time pipeline analytics, pending receivables, and financial profitability intelligence.
           </p>
         </div>
 
         {/* Quick Links (§5.8 FR-DASH-5) */}
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2.5 flex-wrap">
           <Link
             to="/creator/deals/new"
-            className="px-3 py-1.5 rounded-lg bg-creator-900 text-white font-semibold text-xs hover:bg-stone-900 shadow-xs transition-colors"
+            className="px-4 py-2 rounded-xl bg-[#171514] text-[#FAF7F2] font-semibold text-xs hover:bg-[#282422] shadow-luxury transition-all border border-[#282422] flex items-center gap-1.5"
           >
-            + New Deal
+            <Plus className="w-3.5 h-3.5 text-[#B49A70]" />
+            <span>New Deal</span>
           </Link>
           <Link
             to="/creator/finance"
-            className="px-3 py-1.5 rounded-lg border border-stone-300 bg-white text-stone-700 font-semibold text-xs hover:bg-stone-50 transition-colors"
+            className="px-4 py-2 rounded-xl border border-[#D4C2AE] bg-[#F3EAE0] text-[#171514] font-semibold text-xs hover:bg-[#EAE1D6] transition-all"
           >
             Log Payout
           </Link>
           <Link
             to="/creator/contracts"
-            className="px-3 py-1.5 rounded-lg border border-stone-300 bg-white text-stone-700 font-semibold text-xs hover:bg-stone-50 transition-colors"
+            className="px-4 py-2 rounded-xl border border-[#D4C2AE] bg-white text-[#171514] font-semibold text-xs hover:bg-[#FAF7F2] transition-all"
           >
-            AI Contract Review
+            AI Review
           </Link>
         </div>
       </div>
@@ -222,116 +228,136 @@ export const CreatorDashboard: React.FC = () => {
       {/* Primary Financial Metric Cards (§5.8 FR-DASH-1) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* HERO CARD: Net Earnings */}
-        <div className="p-5 bg-stone-900 text-white rounded-xl shadow-xs border border-stone-800 flex flex-col justify-between sm:col-span-2 lg:col-span-1">
+        <div className="p-6 bg-[#171514] text-[#FAF7F2] rounded-2xl shadow-luxury-lg border border-[#282422] flex flex-col justify-between sm:col-span-2 lg:col-span-1 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-[#B49A70]/10 rounded-full blur-2xl pointer-events-none group-hover:bg-[#B49A70]/20 transition-all" />
           <div>
-            <span className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider block">
-              Net Earnings (Hero)
-            </span>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-bold text-[#B49A70] uppercase tracking-[0.18em] block">
+                Net Earnings
+              </span>
+              <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#B49A70]/20 text-[#D4C2AE] border border-[#B49A70]/30 uppercase">
+                Hero
+              </span>
+            </div>
             <span
-              className={`text-2xl sm:text-3xl font-extrabold font-mono-numbers block mt-1 tracking-tight ${
-                metrics.netEarnings < 0 ? 'text-rose-400' : 'text-emerald-400'
+              className={`text-2xl sm:text-3xl font-serif font-bold font-mono-numbers block tracking-tight ${
+                metrics.netEarnings < 0 ? 'text-[#C47C6A]' : 'text-[#FAF7F2]'
               }`}
             >
               {formatINR(metrics.netEarnings)}
             </span>
           </div>
-          <span className="text-[10px] text-stone-400 mt-2 block">Income − Expenses</span>
+          <div className="pt-3 border-t border-[#282422] mt-3">
+            <span className="text-[10px] text-[#A9927A] block font-mono">Income − Expenses</span>
+          </div>
         </div>
 
         {/* Total Received Income */}
-        <div className="p-5 bg-white border border-stone-200 rounded-xl shadow-xs flex flex-col justify-between">
+        <div className="p-6 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury flex flex-col justify-between hover:border-[#B49A70] transition-colors">
           <div>
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
               Received Income
             </span>
-            <span className="text-2xl font-bold font-mono-numbers text-stone-900 block mt-1">
+            <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1 tracking-tight">
               {formatINR(metrics.totalReceivedIncome)}
             </span>
           </div>
-          <span className="text-[10px] text-stone-500 mt-2 block">From all paid records</span>
+          <div className="pt-3 border-t border-[#D4C2AE]/50 mt-3">
+            <span className="text-[10px] text-[#7B726C] block">From all paid records</span>
+          </div>
         </div>
 
         {/* Total Expenses */}
-        <div className="p-5 bg-white border border-stone-200 rounded-xl shadow-xs flex flex-col justify-between">
+        <div className="p-6 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury flex flex-col justify-between hover:border-[#B49A70] transition-colors">
           <div>
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
               Total Expenses
             </span>
-            <span className="text-2xl font-bold font-mono-numbers text-stone-900 block mt-1">
+            <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#A85F48] block mt-1 tracking-tight">
               {formatINR(metrics.totalExpenses)}
             </span>
           </div>
-          <span className="text-[10px] text-stone-500 mt-2 block">Production & gear costs</span>
+          <div className="pt-3 border-t border-[#D4C2AE]/50 mt-3">
+            <span className="text-[10px] text-[#7B726C] block">Production & gear costs</span>
+          </div>
         </div>
 
         {/* Pending Payments (§0 #5) */}
-        <div className="p-5 bg-white border border-stone-200 rounded-xl shadow-xs flex flex-col justify-between">
+        <div className="p-6 bg-[#F3EAE0] border border-[#D4C2AE] rounded-2xl shadow-luxury flex flex-col justify-between hover:border-[#B49A70] transition-colors">
           <div>
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-[#7A6440] uppercase tracking-[0.18em] block">
               Pending Payments
             </span>
-            <span className="text-2xl font-bold font-mono-numbers text-amber-900 block mt-1">
+            <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1 tracking-tight">
               {formatINR(metrics.pendingPayments)}
             </span>
           </div>
-          <span className="text-[10px] text-stone-500 mt-2 block">Unpaid on active deals</span>
+          <div className="pt-3 border-t border-[#D4C2AE]/60 mt-3">
+            <span className="text-[10px] text-[#7B726C] block">Unpaid on active deals</span>
+          </div>
         </div>
 
         {/* Active Collaborations */}
-        <div className="p-5 bg-white border border-stone-200 rounded-xl shadow-xs flex flex-col justify-between">
+        <div className="p-6 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury flex flex-col justify-between hover:border-[#B49A70] transition-colors">
           <div>
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
               Active Deals
             </span>
-            <span className="text-2xl font-bold font-mono-numbers text-stone-900 block mt-1">
+            <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1 tracking-tight">
               {metrics.activeCollaborations}
             </span>
           </div>
-          <span className="text-[10px] text-stone-500 mt-2 block">Accepted & In Progress</span>
+          <div className="pt-3 border-t border-[#D4C2AE]/50 mt-3">
+            <span className="text-[10px] text-[#7B726C] block">Accepted & In Progress</span>
+          </div>
         </div>
       </div>
 
-      {/* Chart & Upcoming Deadlines Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Chart & Upcoming Deadlines Grid: Asymmetric Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Monthly Financial Trend Chart (§5.8 FR-DASH-4) */}
-        <div className="lg:col-span-2 p-5 bg-white border border-stone-200 rounded-xl shadow-xs">
-          <div className="flex items-center justify-between mb-2">
+        <div className="lg:col-span-8 p-6 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury">
+          <div className="flex items-center justify-between pb-3 mb-2 border-b border-[#D4C2AE]/50">
             <div>
-              <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-                Monthly Net Profit Trend
+              <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+                Financial Trend
+              </span>
+              <h2 className="text-xl font-serif font-bold text-[#171514]">
+                Monthly Net Profit Trajectory
               </h2>
-              <p className="text-xs text-stone-500">
-                Tracking monthly received payouts vs operational expenses.
-              </p>
             </div>
             <Link
               to="/creator/finance"
-              className="text-xs font-semibold text-creator-900 hover:underline flex items-center gap-1"
+              className="text-xs font-semibold text-[#171514] hover:text-[#B49A70] flex items-center gap-1 transition-colors"
             >
-              Full Finance →
+              Full Finance P&L <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
           <MonthlyTrendChart data={monthlyTrends} />
         </div>
 
         {/* Upcoming Deadlines Widget (§5.8 FR-DASH-2) */}
-        <div className="p-5 bg-white border border-stone-200 rounded-xl shadow-xs flex flex-col justify-between">
+        <div className="lg:col-span-4 p-6 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-stone-100 mb-3">
-              <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-creator-900" />
-                Next Deadlines
-              </h2>
+            <div className="flex items-center justify-between pb-3 border-b border-[#D4C2AE]/50 mb-4">
+              <div>
+                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+                  Calendar Watch
+                </span>
+                <h2 className="text-xl font-serif font-bold text-[#171514] flex items-center gap-1.5">
+                  Next Deadlines
+                </h2>
+              </div>
               <Link
                 to="/creator/deals"
-                className="text-xs font-semibold text-creator-900 hover:underline"
+                className="text-xs font-semibold text-[#171514] hover:text-[#B49A70] transition-colors"
               >
-                All Deals
+                All Deals →
               </Link>
             </div>
 
             {topDeadlines.length === 0 ? (
-              <p className="text-xs text-stone-500 py-6 text-center">
+              <p className="text-xs text-[#7B726C] py-8 text-center italic">
                 No upcoming submission or publishing deadlines on active deals.
               </p>
             ) : (
@@ -340,14 +366,14 @@ export const CreatorDashboard: React.FC = () => {
                   const isOverdue = item.daysRemaining < 0;
                   const isDueSoon = item.daysRemaining >= 0 && item.daysRemaining <= 3;
 
-                  let badgeColor = 'bg-surface-100 text-stone-700 border-stone-200';
+                  let badgeColor = 'bg-[#FAF7F2] text-[#5A534F] border-[#D4C2AE]';
                   let statusText = `${item.daysRemaining} days left`;
 
                   if (isOverdue) {
-                    badgeColor = 'bg-rose-50 text-rose-700 border-rose-200 font-bold';
+                    badgeColor = 'bg-[#FAF3F1] text-[#A85F48] border-[#E7C2B9] font-bold';
                     statusText = `Overdue by ${Math.abs(item.daysRemaining)}d`;
                   } else if (isDueSoon) {
-                    badgeColor = 'bg-amber-50 text-amber-800 border-amber-200 font-bold';
+                    badgeColor = 'bg-[#F3EAE0] text-[#7A6440] border-[#D4C2AE] font-bold';
                     statusText = item.daysRemaining === 0 ? 'Due Today' : `Due in ${item.daysRemaining}d`;
                   }
 
@@ -355,14 +381,14 @@ export const CreatorDashboard: React.FC = () => {
                     <div
                       key={item.id}
                       onClick={() => navigate(`/creator/deals/${item.dealId}`)}
-                      className="p-2.5 rounded-lg border border-stone-100 hover:border-stone-300 hover:bg-surface-50 cursor-pointer transition-all"
+                      className="p-3.5 rounded-xl border border-[#D4C2AE]/70 hover:border-[#B49A70] hover:bg-[#FAF7F2] cursor-pointer transition-all"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="truncate">
-                          <p className="text-xs font-bold text-stone-900 truncate">
+                          <p className="text-xs font-bold text-[#171514] truncate font-serif">
                             {item.campaignTitle}
                           </p>
-                          <p className="text-[10px] text-stone-500 truncate">
+                          <p className="text-[11px] text-[#7B726C] truncate mt-0.5">
                             {item.brandName} · {item.deadlineType}
                           </p>
                         </div>
@@ -372,7 +398,7 @@ export const CreatorDashboard: React.FC = () => {
                           {statusText}
                         </span>
                       </div>
-                      <div className="text-[10px] text-stone-400 mt-1 font-mono-numbers">
+                      <div className="text-[10px] text-[#7B726C] mt-1.5 font-mono">
                         {formatDate(item.dateStr)}
                       </div>
                     </div>
@@ -382,34 +408,43 @@ export const CreatorDashboard: React.FC = () => {
             )}
           </div>
 
-          <div className="pt-3 border-t border-stone-100 mt-4 text-[10px] text-stone-400 flex items-center justify-between">
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-rose-500 inline-block" /> Overdue
+          <div className="pt-3.5 border-t border-[#D4C2AE]/50 mt-4 text-[10px] text-[#7B726C] flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#A85F48] inline-block" /> Overdue
             </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" /> Within 3 days
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#B49A70] inline-block" /> Within 3 days
             </span>
           </div>
         </div>
       </div>
 
       {/* Recent Activity Feed (§5.8 FR-DASH-3) */}
-      <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-xs">
-        <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider mb-4 pb-2 border-b border-stone-100">
-          Recent Activity & Events
-        </h2>
+      <div className="bg-white border border-[#D4C2AE] rounded-2xl p-6 sm:p-7 shadow-luxury">
+        <div className="flex items-center justify-between pb-3 border-b border-[#D4C2AE]/50 mb-4">
+          <div>
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Audit Trail
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514]">
+              Recent Activity & Platform Events
+            </h2>
+          </div>
+          <span className="text-xs text-[#7B726C]">Last 8 events</span>
+        </div>
 
         {recentActivities.length === 0 ? (
-          <p className="text-xs text-stone-500 py-4 text-center">No recent activity recorded yet.</p>
+          <p className="text-xs text-[#7B726C] py-6 text-center italic">No recent activity recorded yet.</p>
         ) : (
-          <div className="divide-y divide-stone-100">
+          <div className="divide-y divide-[#D4C2AE]/40">
             {recentActivities.map((act) => (
-              <div key={act.id} className="py-2.5 flex items-center justify-between text-xs">
-                <div className="truncate pr-4">
-                  <span className="font-bold text-stone-900">{act.title}</span>
-                  <span className="text-stone-500 ml-2 truncate">{act.description}</span>
+              <div key={act.id} className="py-3 flex items-center justify-between text-xs hover:bg-[#FAF7F2]/60 px-2 rounded-lg transition-colors">
+                <div className="truncate pr-4 flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#B49A70] shrink-0" />
+                  <span className="font-semibold text-[#171514]">{act.title}</span>
+                  <span className="text-[#7B726C] truncate">{act.description}</span>
                 </div>
-                <span className="text-[10px] text-stone-400 font-mono-numbers shrink-0">
+                <span className="text-[11px] text-[#7B726C] font-mono shrink-0">
                   {formatDate(act.timestamp)}
                 </span>
               </div>

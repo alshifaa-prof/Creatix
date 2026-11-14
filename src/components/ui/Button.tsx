@@ -17,25 +17,25 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 select-none disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-2 focus-visible:outline-offset-2';
+    'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 select-none disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-2 focus-visible:outline-offset-2';
 
   const sizeStyles = {
-    sm: 'text-xs px-2.5 py-1.5 gap-1.5 min-h-[32px]',
-    md: 'text-sm px-3.5 py-2 gap-2 min-h-[40px]',
-    lg: 'text-base px-5 py-2.5 gap-2.5 min-h-[44px]',
+    sm: 'text-xs px-3 py-1.5 gap-1.5 min-h-[32px] tracking-wide',
+    md: 'text-xs sm:text-sm px-4 py-2 gap-2 min-h-[40px]',
+    lg: 'text-sm sm:text-base px-6 py-2.5 gap-2.5 min-h-[46px]',
   };
 
   const variantStyles = {
     primary:
-      'bg-creator-900 text-white hover:bg-stone-900 active:bg-black shadow-xs focus-visible:outline-creator-900',
+      'bg-[#171514] text-[#FAF7F2] border border-[#282422] hover:bg-[#282422] hover:border-[#B49A70]/60 active:bg-[#0F0E0D] shadow-luxury focus-visible:outline-[#B49A70]',
     secondary:
-      'bg-surface-200 text-stone-900 hover:bg-surface-300 active:bg-surface-400 focus-visible:outline-stone-700',
+      'bg-[#F3EAE0] text-[#171514] border border-[#D4C2AE] hover:bg-[#EAE1D6] hover:border-[#B49A70] active:bg-[#D4C2AE] focus-visible:outline-[#171514]',
     outline:
-      'border border-stone-300 bg-white text-stone-800 hover:bg-stone-50 hover:border-stone-400 active:bg-stone-100 focus-visible:outline-stone-700',
+      'border border-[#D4C2AE] bg-white text-[#171514] hover:bg-[#FAF7F2] hover:border-[#B49A70] active:bg-[#F3EAE0] focus-visible:outline-[#B49A70]',
     danger:
-      'bg-rose-600 text-white hover:bg-rose-700 active:bg-rose-800 shadow-xs focus-visible:outline-rose-600',
+      'bg-[#A85F48] text-white border border-[#8F4E3A] hover:bg-[#8F4E3A] active:bg-[#723C2C] shadow-xs focus-visible:outline-[#A85F48]',
     ghost:
-      'text-stone-700 hover:bg-stone-100 hover:text-stone-900 active:bg-stone-200 focus-visible:outline-stone-700',
+      'text-[#5A534F] hover:text-[#171514] hover:bg-[#F3EAE0]/70 active:bg-[#F3EAE0] focus-visible:outline-[#B49A70]',
   };
 
   return (

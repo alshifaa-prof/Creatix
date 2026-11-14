@@ -16,8 +16,8 @@ import { formatINR } from '../../lib/format';
 export const MonthlyTrendChart: React.FC<{ data: MonthlyFinancialSummary[] }> = ({ data }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="h-64 flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 rounded-xl bg-white/40">
-        <p className="text-xs text-stone-500">No monthly financial records to display.</p>
+      <div className="h-64 flex flex-col items-center justify-center text-center p-6 border border-dashed border-[#D4C2AE] rounded-xl bg-[#FAF7F2]/60">
+        <p className="text-xs text-[#7B726C]">No monthly financial records to display.</p>
       </div>
     );
   }
@@ -37,15 +37,15 @@ export const MonthlyTrendChart: React.FC<{ data: MonthlyFinancialSummary[] }> = 
     <div className="h-72 w-full pt-2">
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={formattedData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e8e5db" vertical={false} />
+          <CartesianGrid strokeDasharray="2 2" stroke="#EAE1D6" vertical={false} />
           <XAxis
             dataKey="displayMonth"
-            tick={{ fontSize: 11, fill: '#78716c' }}
+            tick={{ fontSize: 11, fill: '#7B726C', fontFamily: 'DM Sans, sans-serif' }}
             tickLine={false}
-            axisLine={{ stroke: '#e8e5db' }}
+            axisLine={{ stroke: '#D4C2AE' }}
           />
           <YAxis
-            tick={{ fontSize: 11, fill: '#78716c' }}
+            tick={{ fontSize: 11, fill: '#7B726C', fontFamily: 'JetBrains Mono, monospace' }}
             tickLine={false}
             axisLine={false}
             tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
@@ -54,18 +54,18 @@ export const MonthlyTrendChart: React.FC<{ data: MonthlyFinancialSummary[] }> = 
             content={({ active, payload, label }) => {
               if (active && payload && payload.length) {
                 return (
-                  <div className="bg-white border border-stone-200 p-3 rounded-lg shadow-md text-xs font-sans">
-                    <p className="font-bold text-stone-900 mb-1.5">{label}</p>
+                  <div className="bg-[#FAF7F2] border border-[#D4C2AE] p-3.5 rounded-xl shadow-luxury text-xs font-sans">
+                    <p className="font-serif font-bold text-sm text-[#171514] mb-2">{label}</p>
                     {payload.map((entry: any, index: number) => (
                       <div key={`item-${index}`} className="flex items-center justify-between gap-4 py-0.5">
-                        <span className="text-stone-600 flex items-center gap-1.5">
+                        <span className="text-[#5A534F] flex items-center gap-1.5 text-xs">
                           <span
                             className="w-2.5 h-2.5 rounded-xs"
                             style={{ backgroundColor: entry.color }}
                           />
                           {entry.name}:
                         </span>
-                        <span className="font-bold font-mono-numbers text-stone-900">
+                        <span className="font-bold font-mono-numbers text-[#171514]">
                           {formatINR(entry.value)}
                         </span>
                       </div>
@@ -80,17 +80,17 @@ export const MonthlyTrendChart: React.FC<{ data: MonthlyFinancialSummary[] }> = 
             verticalAlign="top"
             height={36}
             iconType="circle"
-            wrapperStyle={{ fontSize: '11px', color: '#57534e' }}
+            wrapperStyle={{ fontSize: '11px', color: '#5A534F', fontFamily: 'DM Sans, sans-serif' }}
           />
-          <Bar dataKey="income" name="Received Income" fill="#1b4332" radius={[4, 4, 0, 0]} maxBarSize={32} />
-          <Bar dataKey="expenses" name="Expenses" fill="#e11d48" radius={[4, 4, 0, 0]} maxBarSize={32} />
+          <Bar dataKey="income" name="Received Income" fill="#171514" radius={[4, 4, 0, 0]} maxBarSize={32} />
+          <Bar dataKey="expenses" name="Expenses" fill="#A85F48" radius={[4, 4, 0, 0]} maxBarSize={32} />
           <Line
             type="monotone"
             dataKey="net"
             name="Net Earnings"
-            stroke="#0f172a"
+            stroke="#B49A70"
             strokeWidth={2.5}
-            dot={{ r: 3, fill: '#0f172a' }}
+            dot={{ r: 3, fill: '#B49A70' }}
             activeDot={{ r: 5 }}
           />
         </ComposedChart>

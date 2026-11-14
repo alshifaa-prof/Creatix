@@ -7,7 +7,7 @@ import { Input, Textarea, Select } from '../../components/ui/Input';
 import { SelfReportedBadge } from '../../components/ui/SelfReportedBadge';
 import { Skeleton } from '../../components/ui/EmptyState';
 import toast from 'react-hot-toast';
-import { Globe, Lock, ExternalLink, Check, Copy } from 'lucide-react';
+import { Globe, Lock, ExternalLink, Check, Copy, Sparkles } from 'lucide-react';
 
 const NICHES = [
   'Beauty & Lifestyle',
@@ -87,8 +87,8 @@ export const CreatorProfilePage: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-6 max-w-4xl">
-        <Skeleton className="h-10 w-48" />
-        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-12 w-64 rounded-2xl" />
+        <Skeleton className="h-72 w-full rounded-2xl" />
       </div>
     );
   }
@@ -96,31 +96,37 @@ export const CreatorProfilePage: React.FC = () => {
   if (!profile) return null;
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-4xl space-y-8 w-full">
       {/* Header and Public Link Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-stone-200">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#D4C2AE]/60">
         <div>
-          <h1 className="text-2xl font-serif font-bold text-stone-900">Creator Profile & Media Kit</h1>
-          <p className="text-xs text-stone-500 mt-1">
-            Complete your public pitch and showcase your audience reach to brand partners.
+          <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] mb-1">
+            <Sparkles className="w-3 h-3 text-[#B49A70]" />
+            06 / Media Kit & Reach
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#171514] tracking-tight">
+            Creator Profile & Media Kit
+          </h1>
+          <p className="text-xs text-[#5A534F] mt-1">
+            Complete your public pitch, audience demographics, and social stats to showcase to brand partners.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {profile.is_public ? (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
-              <Globe className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#E2F1E9] text-[#1E4936] border border-[#B7DAC7]">
+              <Globe className="w-3.5 h-3.5 text-[#2D6A4F]" />
               Public Media Kit
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-stone-100 text-stone-700 border border-stone-200">
-              <Lock className="w-3.5 h-3.5 text-stone-500" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#F1ECE4] text-[#695644] border border-[#D4C2AE]">
+              <Lock className="w-3.5 h-3.5 text-[#7B726C]" />
               Private
             </span>
           )}
 
-          <Button variant="outline" size="sm" onClick={copyPublicLink}>
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+          <Button variant="secondary" size="sm" onClick={copyPublicLink} className="gap-1.5">
+            {copied ? <Check className="w-3.5 h-3.5 text-[#2D6A4F]" /> : <Copy className="w-3.5 h-3.5 text-[#B49A70]" />}
             <span>Copy Link</span>
           </Button>
 
@@ -129,7 +135,7 @@ export const CreatorProfilePage: React.FC = () => {
               href={`/c/${user.id}`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center p-2 rounded-lg border border-stone-200 bg-white hover:bg-stone-50 text-stone-700 transition-colors"
+              className="inline-flex items-center justify-center p-2 rounded-xl border border-[#D4C2AE] bg-white hover:bg-[#FAF7F2] text-[#171514] transition-colors shadow-xs"
               title="Preview public profile"
             >
               <ExternalLink className="w-4 h-4" />
@@ -140,10 +146,15 @@ export const CreatorProfilePage: React.FC = () => {
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Basic Identity */}
-        <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-4">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-            Identity & Bio
-          </h2>
+        <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl space-y-4 shadow-luxury">
+          <div className="pb-3 border-b border-[#D4C2AE]/50">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Identity
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514]">
+              Profile Bio & Location
+            </h2>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
@@ -188,15 +199,15 @@ export const CreatorProfilePage: React.FC = () => {
         </div>
 
         {/* Audience Statistics (§5.2 FR-PROF-1 to FR-PROF-3) */}
-        <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl space-y-4 shadow-luxury">
+          <div className="flex items-center justify-between pb-3 border-b border-[#D4C2AE]/50">
             <div>
-              <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
+              <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+                Social Demographics
+              </span>
+              <h2 className="text-xl font-serif font-bold text-[#171514]">
                 Audience Metrics
               </h2>
-              <p className="text-xs text-stone-500 mt-0.5">
-                Self-reported statistics presented to prospective brand partners.
-              </p>
             </div>
             <SelfReportedBadge />
           </div>
@@ -239,10 +250,15 @@ export const CreatorProfilePage: React.FC = () => {
         </div>
 
         {/* Social Profiles & External Links */}
-        <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-4">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-            Social Links & Channels
-          </h2>
+        <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl space-y-4 shadow-luxury">
+          <div className="pb-3 border-b border-[#D4C2AE]/50">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Channels
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514]">
+              Social Channels & Media Handles
+            </h2>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
@@ -264,10 +280,10 @@ export const CreatorProfilePage: React.FC = () => {
         </div>
 
         {/* Visibility Setting */}
-        <div className="p-6 bg-white border border-stone-200 rounded-xl flex items-center justify-between">
+        <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl flex items-center justify-between shadow-luxury">
           <div>
-            <h3 className="text-sm font-bold text-stone-900">Public Media Kit Visibility</h3>
-            <p className="text-xs text-stone-500 mt-0.5">
+            <h3 className="text-lg font-serif font-bold text-[#171514]">Public Media Kit Visibility</h3>
+            <p className="text-xs text-[#5A534F] mt-0.5">
               When enabled, brand partners can discover your profile and view your media kit via your share link.
             </p>
           </div>
@@ -279,11 +295,11 @@ export const CreatorProfilePage: React.FC = () => {
               onChange={(e) => setProfile({ ...profile, is_public: e.target.checked })}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-creator-900"></div>
+            <div className="w-12 h-6 bg-[#D4C2AE] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#D4C2AE] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#171514]"></div>
           </label>
         </div>
 
-        <div className="flex justify-end gap-3 pt-2">
+        <div className="flex justify-end gap-3 pt-3">
           <Button type="submit" loading={saving} size="md">
             Save Profile Changes
           </Button>

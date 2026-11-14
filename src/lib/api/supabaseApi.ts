@@ -349,7 +349,7 @@ export class SupabaseCreatixApi implements CreatixApi {
     return data as ContractDocument | null;
   }
 
-  async uploadContract(creatorId: string, file: File): Promise<ContractDocument> {
+  async uploadContract(creatorId: string, file: File, extractedText?: string): Promise<ContractDocument> {
     const filePath = `${creatorId}/${Date.now()}_${file.name}`;
     const { error: uploadError } = await supabase.storage.from('contracts').upload(filePath, file);
     if (uploadError) throw new Error(uploadError.message);
@@ -360,6 +360,7 @@ export class SupabaseCreatixApi implements CreatixApi {
         creator_id: creatorId,
         file_path: filePath,
         original_filename: file.name,
+        extracted_text: extractedText || null,
         review_status: 'pending',
       })
       .select()

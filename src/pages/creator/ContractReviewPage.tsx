@@ -20,6 +20,9 @@ import {
   ShieldAlert,
   Loader2,
   RefreshCw,
+  FileText,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 
 export const ContractReviewPage: React.FC = () => {
@@ -34,6 +37,8 @@ export const ContractReviewPage: React.FC = () => {
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [applying, setApplying] = useState(false);
+  const [sourceText, setSourceText] = useState('');
+  const [showSourceText, setShowSourceText] = useState(false);
 
   // Editable Form fields (§5.6 FR-CON-6)
   const [summary, setSummary] = useState('');
@@ -75,12 +80,15 @@ export const ContractReviewPage: React.FC = () => {
       setDeals(allDeals);
       setSelectedDealId(doc.collaboration_id || '');
 
+      if (doc.extracted_text) {
+        setSourceText(doc.extracted_text);
+      }
+
       // Populate form fields if terms already exist
       if (doc.extracted_terms && Object.keys(doc.extracted_terms).length > 0) {
         populateFields(doc.extracted_terms as ExtractedTerms, doc.ai_flags);
       } else {
-        // Trigger AI analysis if unanalyzed
-        runAiAnalysis(doc.id);
+        runAiAnalysis(doc.id, doc.extracted_text || undefined);
       }
     } catch (e) {
       console.error(e);
@@ -107,17 +115,17 @@ export const ContractReviewPage: React.FC = () => {
     setFlags(flagList.length > 0 ? flagList : terms.flags || []);
   };
 
-  const runAiAnalysis = async (docId: string) => {
+  const runAiAnalysis = async (docId: string, manualText?: string) => {
     try {
       setAnalyzing(true);
       setAnalysisError(null);
-      const terms = await api.analyzeContract(docId);
+      const terms = await api.analyzeContract(docId, manualText || sourceText || undefined);
       populateFields(terms, terms.flags);
       toast.success('Contract intelligence terms extracted!');
     } catch (err: any) {
       console.error(err);
       setAnalysisError(err.message || 'AI term extraction failed or timed out.');
-      toast.error('AI extraction could not complete. You can enter terms manually.');
+      toast.error(err.message || 'AI extraction could not complete. You can enter terms manually.');
     } finally {
       setAnalyzing(false);
     }
@@ -213,8 +221,8 @@ export const ContractReviewPage: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-6 max-w-4xl">
-        <Skeleton className="h-10 w-48" />
-        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-12 w-64 rounded-2xl" />
+        <Skeleton className="h-72 w-full rounded-2xl" />
       </div>
     );
   }
@@ -222,32 +230,46 @@ export const ContractReviewPage: React.FC = () => {
   if (!contract) return null;
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-4xl space-y-8 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#D4C2AE]/60">
+        <div className="flex items-center gap-4">
           <Link
             to="/creator/contracts"
-            className="p-1.5 rounded-lg border border-stone-200 bg-white hover:bg-stone-50 text-stone-600 transition-colors"
+            className="p-2 rounded-xl border border-[#D4C2AE] bg-white hover:bg-[#FAF7F2] text-[#171514] transition-colors shadow-xs"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-serif font-bold text-stone-900">
-                Contract Review & Term Confirmation
+            <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] mb-0.5">
+              <Sparkles className="w-3 h-3 text-[#B49A70]" />
+              05 / AI Contract Audit
+            </div>
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171514] tracking-tight">
+                Review & Term Confirmation
               </h1>
               <span
-                className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
+                className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
                   contract.review_status === 'confirmed'
-                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                    : 'bg-amber-50 text-amber-800 border-amber-200'
+                    ? 'bg-[#E2F1E9] text-[#1E4936] border-[#B7DAC7]'
+                    : 'bg-[#F4ECE1] text-[#7A6440] border-[#DEC6A5]'
                 }`}
               >
                 {contract.review_status}
               </span>
+              {import.meta.env.VITE_GEMINI_API_KEY && import.meta.env.VITE_GEMINI_API_KEY !== 'your_gemini_api_key_here' ? (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                  <Sparkles className="w-3 h-3 text-purple-600" />
+                  Gemini AI Active
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-stone-500 bg-stone-100 px-2 py-0.5 rounded border border-stone-200">
+                  Mock Mode
+                </span>
+              )}
             </div>
-            <p className="text-xs text-stone-500 font-mono mt-0.5">
+            <p className="text-xs text-[#7B726C] font-mono mt-1">
               {contract.original_filename}
             </p>
           </div>
@@ -255,8 +277,8 @@ export const ContractReviewPage: React.FC = () => {
 
         <div className="flex items-center gap-2">
           {analyzing ? (
-            <span className="inline-flex items-center gap-2 text-xs font-semibold text-stone-600 bg-stone-100 px-3 py-1.5 rounded-lg">
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-creator-900" />
+            <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#5A534F] bg-[#F3EAE0] px-3.5 py-2 rounded-xl border border-[#D4C2AE]">
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-[#171514]" />
               AI Analyzing PDF...
             </span>
           ) : (
@@ -266,7 +288,7 @@ export const ContractReviewPage: React.FC = () => {
               onClick={() => runAiAnalysis(contract.id)}
               className="gap-1.5"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
+              <RefreshCw className="w-3.5 h-3.5 text-[#B49A70]" />
               Re-analyze AI
             </Button>
           )}
@@ -274,19 +296,19 @@ export const ContractReviewPage: React.FC = () => {
       </div>
 
       {/* Mandatory Disclaimer (§5.6 FR-CON-10) */}
-      <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/90 text-xs text-amber-900 flex items-start gap-2.5">
-        <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+      <div className="p-4 rounded-2xl bg-[#F3EAE0] border border-[#D4C2AE] text-xs text-[#7A6440] flex items-start gap-3 shadow-xs">
+        <AlertTriangle className="w-4 h-4 text-[#B49A70] shrink-0 mt-0.5" />
         <p className="leading-relaxed">
-          <strong>Notice:</strong> AI-generated summary for information only. It is not legal advice. The original contract is the source of truth.
+          <strong>Notice:</strong> AI-generated summary for information only. It is not legal advice. The original contract document is the legal source of truth.
         </p>
       </div>
 
       {/* Analysis Error / Manual Fallback Prompt (§5.6 FR-CON-5, FR-CON-11) */}
       {analysisError && (
-        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center justify-between">
+        <div className="p-5 rounded-2xl bg-[#FAF3F1] border border-[#E7C2B9] text-xs text-[#A85F48] flex items-center justify-between">
           <div>
             <p className="font-bold">AI analysis timed out or could not extract text.</p>
-            <p className="mt-0.5">You can still enter and confirm all contract details manually below.</p>
+            <p className="mt-0.5 text-stone-600">You can still enter and confirm all contract details manually below.</p>
           </div>
           <Button size="sm" variant="outline" onClick={() => setAnalysisError(null)}>
             Enter Manually
@@ -294,13 +316,69 @@ export const ContractReviewPage: React.FC = () => {
         </div>
       )}
 
+      {/* Source Text Drawer & Manual Paste Option */}
+      <div className="border border-[#D4C2AE] rounded-2xl bg-white overflow-hidden text-xs shadow-luxury">
+        <button
+          type="button"
+          onClick={() => setShowSourceText(!showSourceText)}
+          className="w-full px-5 py-3.5 bg-[#FAF7F2] hover:bg-[#F3EAE0] transition-colors flex items-center justify-between text-left font-semibold text-[#171514]"
+        >
+          <span className="flex items-center gap-2.5">
+            <FileText className="w-4 h-4 text-[#B49A70]" />
+            <span>
+              View / Edit Contract Source Text{' '}
+              <span className="text-[#7B726C] font-normal">
+                {sourceText.trim() ? `(${sourceText.length} characters extracted)` : '(No text extracted - paste below)'}
+              </span>
+            </span>
+          </span>
+          {showSourceText ? (
+            <ChevronUp className="w-4 h-4 text-[#7B726C]" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-[#7B726C]" />
+          )}
+        </button>
+
+        {showSourceText && (
+          <div className="p-5 space-y-3.5 border-t border-[#D4C2AE]/50 bg-[#FAF7F2]/60">
+            <p className="text-[#5A534F]">
+              This is the text extracted from the PDF by <code>pdfjs-dist</code>. You can edit this text or paste terms from any brand agreement, then click &quot;Analyze with Gemini&quot; below.
+            </p>
+            <Textarea
+              value={sourceText}
+              onChange={(e) => setSourceText(e.target.value)}
+              placeholder="Paste contract terms or clause text here..."
+              rows={6}
+              className="font-mono text-xs bg-white"
+            />
+            <div className="flex justify-end gap-2">
+              <Button
+                size="sm"
+                onClick={() => runAiAnalysis(contract.id, sourceText)}
+                loading={analyzing}
+                disabled={!sourceText.trim()}
+                className="gap-1.5"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                Analyze This Text with Gemini
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Plain Language Summary Card (§5.6 FR-CON-6) */}
-      <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-3 shadow-xs">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-creator-900" />
-            Plain-Language Contract Summary (Max 150 Words)
-          </h2>
+      <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl space-y-3 shadow-luxury">
+        <div className="flex items-center justify-between pb-3 border-b border-[#D4C2AE]/50">
+          <div>
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Plain English Breakdown
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514] flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-[#B49A70]" />
+              Contract Executive Summary (Max 150 Words)
+            </h2>
+          </div>
         </div>
 
         <Textarea
@@ -313,22 +391,27 @@ export const ContractReviewPage: React.FC = () => {
 
       {/* Points to Review / Flagged Clauses (§5.6 FR-CON-6) */}
       {flags.length > 0 && (
-        <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-3 shadow-xs">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider flex items-center gap-1.5">
-            <ShieldAlert className="w-4 h-4 text-rose-600" />
-            Points to Review (Flagged Clauses)
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+        <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl space-y-4 shadow-luxury">
+          <div className="pb-3 border-b border-[#D4C2AE]/50">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#A85F48] block">
+              Attention Required
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514] flex items-center gap-1.5">
+              <ShieldAlert className="w-4 h-4 text-[#A85F48]" />
+              Points to Review (Flagged Risk Clauses)
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             {flags.map((f, i) => (
               <div
                 key={i}
-                className="p-3.5 rounded-lg bg-rose-50/60 border border-rose-200/80 space-y-1"
+                className="p-4 rounded-xl bg-[#FAF3F1] border border-[#E7C2B9] space-y-1.5"
               >
-                <div className="text-xs font-bold text-rose-900 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
+                <div className="text-xs font-serif font-bold text-[#A85F48] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#A85F48]" />
                   {f.clause}
                 </div>
-                <p className="text-[11px] text-stone-700 leading-relaxed">{f.reason}</p>
+                <p className="text-[11px] text-[#5A534F] leading-relaxed">{f.reason}</p>
               </div>
             ))}
           </div>
@@ -337,13 +420,18 @@ export const ContractReviewPage: React.FC = () => {
 
       {/* Form: Structured & Editable Deal Terms (§5.6 FR-CON-6, FR-CON-7) */}
       <form onSubmit={handleConfirmAndSave} className="space-y-6">
-        <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-4 shadow-xs">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-            Extracted Structured Terms (Editable)
-          </h2>
-          <p className="text-xs text-stone-500">
-            Fields AI could not find show as empty. Edit any term to match your agreement before confirming.
-          </p>
+        <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl space-y-4 shadow-luxury">
+          <div className="pb-3 border-b border-[#D4C2AE]/50">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Parameter Extraction
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514]">
+              Extracted Structured Terms (Editable)
+            </h2>
+            <p className="text-xs text-[#7B726C] mt-0.5">
+              Fields AI could not find show as empty. Edit any term to match your agreement before confirming.
+            </p>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Input
@@ -414,13 +502,18 @@ export const ContractReviewPage: React.FC = () => {
         </div>
 
         {/* Link to Collaboration Deal (§5.6 FR-CON-8, FR-CON-9) */}
-        <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-4 shadow-xs">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-            Link to Collaboration Deal
-          </h2>
-          <p className="text-xs text-stone-500">
-            Connect these confirmed terms to an existing collaboration or generate a new deal.
-          </p>
+        <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl space-y-4 shadow-luxury">
+          <div className="pb-3 border-b border-[#D4C2AE]/50">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Deal Synchronization
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514]">
+              Link to Collaboration Deal
+            </h2>
+            <p className="text-xs text-[#7B726C] mt-0.5">
+              Connect these confirmed terms to an existing collaboration or generate a new deal record.
+            </p>
+          </div>
 
           <Select
             label="Select Collaboration Deal"
@@ -438,8 +531,8 @@ export const ContractReviewPage: React.FC = () => {
 
           {/* Explicit Apply Payment & Deadlines Button (§5.6 FR-CON-9) */}
           {selectedDealId && selectedDealId !== 'NEW_DEAL' && (
-            <div className="pt-2 flex items-center justify-between p-3.5 rounded-lg bg-surface-50 border border-stone-200">
-              <span className="text-xs text-stone-700">
+            <div className="pt-2 flex items-center justify-between p-4 rounded-xl bg-[#FAF7F2] border border-[#D4C2AE]">
+              <span className="text-xs text-[#5A534F]">
                 Update deal <strong>{formatINR(parseFloat(paymentAmount) || 0)}</strong> and deadline values?
               </span>
               <Button
@@ -466,7 +559,7 @@ export const ContractReviewPage: React.FC = () => {
           </Button>
 
           <Button type="submit" loading={saving} size="md" className="gap-2 w-full sm:w-auto">
-            <CheckCircle2 className="w-4 h-4" />
+            <CheckCircle2 className="w-4 h-4 text-[#B49A70]" />
             <span>Confirm & Save Contract Terms</span>
           </Button>
         </div>

@@ -46,23 +46,23 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-stone-900/40 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-[#171514]/60 backdrop-blur-xs transition-opacity duration-200"
         onClick={onClose}
       />
 
       {/* Modal Container */}
       <div
-        className={`relative w-full ${widthClasses[maxWidth]} bg-white rounded-xl shadow-xl border border-stone-200 overflow-hidden z-10 max-h-[90vh] flex flex-col`}
+        className={`relative w-full ${widthClasses[maxWidth]} bg-[#FAF7F2] rounded-2xl shadow-luxury-lg border border-[#D4C2AE] overflow-hidden z-10 max-h-[90vh] flex flex-col transition-all duration-200`}
       >
         {(title || description) && (
-          <div className="px-6 py-4 border-b border-stone-100 flex items-start justify-between bg-surface-50/50">
+          <div className="px-6 py-4.5 border-b border-[#D4C2AE]/60 flex items-start justify-between bg-[#F3EAE0]/70">
             <div>
-              {title && <h3 className="text-lg font-bold text-stone-900">{title}</h3>}
-              {description && <p className="text-xs text-stone-500 mt-0.5">{description}</p>}
+              {title && <h3 className="text-xl font-serif font-bold text-[#171514] tracking-tight">{title}</h3>}
+              {description && <p className="text-xs text-[#7B726C] mt-0.5">{description}</p>}
             </div>
             <button
               onClick={onClose}
-              className="p-1 rounded-md text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors"
+              className="p-1.5 rounded-lg text-[#7B726C] hover:text-[#171514] hover:bg-[#EAE1D6] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>

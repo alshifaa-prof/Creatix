@@ -13,24 +13,24 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+          <label htmlFor={inputId} className="block text-[11px] font-semibold text-[#5A534F] uppercase tracking-[0.08em] mb-1.5">
             {label}
           </label>
         )}
         <input
           id={inputId}
           ref={ref}
-          className={`w-full px-3 py-2 text-sm bg-white border rounded-lg text-stone-900 placeholder:text-stone-400 transition-colors focus:outline-none focus:ring-1 ${
+          className={`w-full px-3.5 py-2.5 text-sm bg-white border rounded-lg text-[#171514] placeholder:text-[#A9927A]/70 transition-all duration-150 focus:outline-none focus:ring-1 ${
             error
-              ? 'border-rose-400 focus:border-rose-600 focus:ring-rose-600'
-              : 'border-stone-300 focus:border-stone-800 focus:ring-stone-800'
+              ? 'border-[#A85F48] focus:border-[#A85F48] focus:ring-[#A85F48]/30'
+              : 'border-[#D4C2AE] focus:border-[#B49A70] focus:ring-[#B49A70]/40'
           } ${className}`}
           {...props}
         />
         {error ? (
-          <p className="mt-1 text-xs text-rose-600">{error}</p>
+          <p className="mt-1 text-xs text-[#A85F48]">{error}</p>
         ) : hint ? (
-          <p className="mt-1 text-xs text-stone-500">{hint}</p>
+          <p className="mt-1 text-xs text-[#7B726C]">{hint}</p>
         ) : null}
       </div>
     );
@@ -52,7 +52,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+          <label htmlFor={inputId} className="block text-[11px] font-semibold text-[#5A534F] uppercase tracking-[0.08em] mb-1.5">
             {label}
           </label>
         )}
@@ -60,17 +60,17 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={inputId}
           ref={ref}
           rows={rows}
-          className={`w-full px-3 py-2 text-sm bg-white border rounded-lg text-stone-900 placeholder:text-stone-400 transition-colors focus:outline-none focus:ring-1 ${
+          className={`w-full px-3.5 py-2.5 text-sm bg-white border rounded-lg text-[#171514] placeholder:text-[#A9927A]/70 transition-all duration-150 focus:outline-none focus:ring-1 ${
             error
-              ? 'border-rose-400 focus:border-rose-600 focus:ring-rose-600'
-              : 'border-stone-300 focus:border-stone-800 focus:ring-stone-800'
+              ? 'border-[#A85F48] focus:border-[#A85F48] focus:ring-[#A85F48]/30'
+              : 'border-[#D4C2AE] focus:border-[#B49A70] focus:ring-[#B49A70]/40'
           } ${className}`}
           {...props}
         />
         {error ? (
-          <p className="mt-1 text-xs text-rose-600">{error}</p>
+          <p className="mt-1 text-xs text-[#A85F48]">{error}</p>
         ) : hint ? (
-          <p className="mt-1 text-xs text-stone-500">{hint}</p>
+          <p className="mt-1 text-xs text-[#7B726C]">{hint}</p>
         ) : null}
       </div>
     );
@@ -93,17 +93,17 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+          <label htmlFor={inputId} className="block text-[11px] font-semibold text-[#5A534F] uppercase tracking-[0.08em] mb-1.5">
             {label}
           </label>
         )}
         <select
           id={inputId}
           ref={ref}
-          className={`w-full px-3 py-2 text-sm bg-white border rounded-lg text-stone-900 transition-colors focus:outline-none focus:ring-1 ${
+          className={`w-full px-3.5 py-2.5 text-sm bg-white border rounded-lg text-[#171514] transition-all duration-150 focus:outline-none focus:ring-1 ${
             error
-              ? 'border-rose-400 focus:border-rose-600 focus:ring-rose-600'
-              : 'border-stone-300 focus:border-stone-800 focus:ring-stone-800'
+              ? 'border-[#A85F48] focus:border-[#A85F48] focus:ring-[#A85F48]/30'
+              : 'border-[#D4C2AE] focus:border-[#B49A70] focus:ring-[#B49A70]/40'
           } ${className}`}
           {...props}
         >
@@ -114,9 +114,9 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           ))}
         </select>
         {error ? (
-          <p className="mt-1 text-xs text-rose-600">{error}</p>
+          <p className="mt-1 text-xs text-[#A85F48]">{error}</p>
         ) : hint ? (
-          <p className="mt-1 text-xs text-stone-500">{hint}</p>
+          <p className="mt-1 text-xs text-[#7B726C]">{hint}</p>
         ) : null}
       </div>
     );

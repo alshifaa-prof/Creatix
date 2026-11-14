@@ -114,8 +114,8 @@ export const BrandCreatorViewPage: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-6 max-w-4xl">
-        <Skeleton className="h-10 w-48" />
-        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-12 w-64 rounded-2xl" />
+        <Skeleton className="h-72 w-full rounded-2xl" />
       </div>
     );
   }
@@ -125,75 +125,75 @@ export const BrandCreatorViewPage: React.FC = () => {
   const { creator, profile } = creatorData;
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-4xl space-y-8 w-full">
       {/* Top Bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-stone-200">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between pb-6 border-b border-[#D4C2AE]/60">
+        <div className="flex items-center gap-4">
           <Link
             to="/brand/discover"
-            className="p-1.5 rounded-lg border border-stone-200 bg-white hover:bg-stone-50 text-stone-600 transition-colors"
+            className="p-2 rounded-xl border border-[#D4C2AE] bg-white hover:bg-[#FAF7F2] text-[#171514] transition-colors shadow-xs"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
-          <span className="text-xs text-stone-500 font-medium">Back to Creator Directory</span>
+          <span className="text-xs text-[#7B726C] font-medium">Back to Creator Directory</span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <Button
-            variant="outline"
+            variant="secondary"
             size="sm"
             onClick={handleToggleShortlist}
-            className={`gap-1.5 ${isShortlisted ? 'bg-amber-50 border-amber-300 text-amber-800' : ''}`}
+            className={`gap-1.5 ${isShortlisted ? 'bg-[#F3EAE0] border-[#B49A70] text-[#7A6440]' : ''}`}
           >
-            <Bookmark className={`w-3.5 h-3.5 ${isShortlisted ? 'fill-amber-600' : ''}`} />
+            <Bookmark className={`w-3.5 h-3.5 ${isShortlisted ? 'fill-[#B49A70] text-[#B49A70]' : ''}`} />
             <span>{isShortlisted ? 'Shortlisted' : 'Shortlist Creator'}</span>
           </Button>
 
           <Button
             size="sm"
             onClick={() => setIsModalOpen(true)}
-            className="bg-brand-900 hover:bg-black text-white gap-1.5"
+            className="gap-1.5"
           >
-            <Send className="w-3.5 h-3.5" />
+            <Send className="w-3.5 h-3.5 text-[#B49A70]" />
             <span>Send Enquiry</span>
           </Button>
         </div>
       </div>
 
       {/* Creator Profile Hero */}
-      <div className="bg-white border border-stone-200 rounded-xl p-6 sm:p-8 relative shadow-xs">
+      <div className="bg-white border border-[#D4C2AE] rounded-3xl p-6 sm:p-9 relative shadow-luxury">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
           {creator.profile_image_url ? (
             <img
               src={creator.profile_image_url}
               alt={creator.display_name || ''}
-              className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-2 border-stone-200 shadow-sm"
+              className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-[#D4C2AE] shadow-luxury"
             />
           ) : (
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-surface-200 flex items-center justify-center font-serif font-bold text-3xl text-stone-700 border border-stone-300">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-[#F3EAE0] flex items-center justify-center font-serif font-bold text-3xl text-[#171514] border border-[#D4C2AE]">
               {(creator.display_name || profile.name || 'C')[0]}
             </div>
           )}
 
           <div className="flex-1 min-w-0">
-            <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight">
+            <div className="flex flex-wrap items-center gap-2.5 mb-2">
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171514] tracking-tight">
                 {creator.display_name || profile.name}
               </h1>
-              <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#F4ECE1] text-[#7A6440] border border-[#DEC6A5]">
                 {creator.niche}
               </span>
             </div>
 
             {creator.location && (
-              <p className="text-xs text-stone-500 flex items-center gap-1 mb-3">
-                <MapPin className="w-3.5 h-3.5" />
+              <p className="text-xs text-[#7B726C] flex items-center gap-1.5 mb-3 font-medium">
+                <MapPin className="w-3.5 h-3.5 text-[#B49A70]" />
                 {creator.location}
               </p>
             )}
 
             {creator.bio && (
-              <p className="text-sm text-stone-700 leading-relaxed max-w-xl">
+              <p className="text-sm text-[#5A534F] leading-relaxed max-w-xl font-normal">
                 {creator.bio}
               </p>
             )}
@@ -201,17 +201,17 @@ export const BrandCreatorViewPage: React.FC = () => {
         </div>
 
         {/* Social Links */}
-        <div className="mt-6 pt-6 border-t border-stone-100 flex flex-wrap gap-3">
+        <div className="mt-8 pt-6 border-t border-[#D4C2AE]/50 flex flex-wrap gap-3">
           {creator.instagram_url && (
             <a
               href={creator.instagram_url}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 bg-surface-50 text-stone-800 hover:bg-stone-100 text-xs font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[#D4C2AE] bg-[#FAF7F2] text-[#171514] hover:bg-[#F3EAE0] text-xs font-semibold transition-colors"
             >
-              <Instagram className="w-3.5 h-3.5 text-rose-600" />
+              <Instagram className="w-4 h-4 text-[#A85F48]" />
               Instagram
-              <ExternalLink className="w-3 h-3 text-stone-400" />
+              <ExternalLink className="w-3.5 h-3.5 text-[#7B726C]" />
             </a>
           )}
 
@@ -220,64 +220,69 @@ export const BrandCreatorViewPage: React.FC = () => {
               href={creator.youtube_url}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 bg-surface-50 text-stone-800 hover:bg-stone-100 text-xs font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[#D4C2AE] bg-[#FAF7F2] text-[#171514] hover:bg-[#F3EAE0] text-xs font-semibold transition-colors"
             >
-              <Youtube className="w-3.5 h-3.5 text-red-600" />
+              <Youtube className="w-4 h-4 text-[#A85F48]" />
               YouTube Channel
-              <ExternalLink className="w-3 h-3 text-stone-400" />
+              <ExternalLink className="w-3.5 h-3.5 text-[#7B726C]" />
             </a>
           )}
         </div>
       </div>
 
       {/* Self-reported Audience Reach Section */}
-      <div className="bg-white border border-stone-200 rounded-xl p-6 sm:p-8 space-y-4 shadow-xs">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-            Audience Demographics & Reach
-          </h2>
+      <div className="bg-white border border-[#D4C2AE] rounded-3xl p-6 sm:p-9 space-y-4 shadow-luxury">
+        <div className="flex items-center justify-between pb-3 border-b border-[#D4C2AE]/50">
+          <div>
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Audience Scale
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514]">
+              Demographics & Engagement
+            </h2>
+          </div>
           <SelfReportedBadge />
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-          <div className="p-4 rounded-lg bg-surface-50 border border-stone-200/80">
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+          <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#D4C2AE]">
+            <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
               Followers
             </span>
-            <span className="text-xl sm:text-2xl font-bold font-mono-numbers text-stone-900 block mt-1">
+            <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1">
               {(creator.follower_count || 0).toLocaleString('en-IN')}
             </span>
-            <span className="text-[10px] text-stone-400 block mt-0.5">Instagram reach</span>
+            <span className="text-[10px] text-[#7B726C] block mt-1">Instagram reach</span>
           </div>
 
-          <div className="p-4 rounded-lg bg-surface-50 border border-stone-200/80">
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+          <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#D4C2AE]">
+            <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
               Subscribers
             </span>
-            <span className="text-xl sm:text-2xl font-bold font-mono-numbers text-stone-900 block mt-1">
+            <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1">
               {(creator.subscriber_count || 0).toLocaleString('en-IN')}
             </span>
-            <span className="text-[10px] text-stone-400 block mt-0.5">YouTube community</span>
+            <span className="text-[10px] text-[#7B726C] block mt-1">YouTube community</span>
           </div>
 
-          <div className="p-4 rounded-lg bg-surface-50 border border-stone-200/80">
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+          <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#D4C2AE]">
+            <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
               Avg. Views
             </span>
-            <span className="text-xl sm:text-2xl font-bold font-mono-numbers text-stone-900 block mt-1">
+            <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1">
               {(creator.average_views || 0).toLocaleString('en-IN')}
             </span>
-            <span className="text-[10px] text-stone-400 block mt-0.5">Per video / reel</span>
+            <span className="text-[10px] text-[#7B726C] block mt-1">Per video / reel</span>
           </div>
 
-          <div className="p-4 rounded-lg bg-surface-50 border border-stone-200/80">
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+          <div className="p-5 rounded-2xl bg-[#F3EAE0] border border-[#D4C2AE]">
+            <span className="text-[10px] font-bold text-[#7A6440] uppercase tracking-[0.18em] block">
               Engagement
             </span>
-            <span className="text-xl sm:text-2xl font-bold font-mono-numbers text-emerald-800 block mt-1">
+            <span className="text-2xl sm:text-3xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1">
               {creator.engagement_rate || 0}%
             </span>
-            <span className="text-[10px] text-stone-400 block mt-0.5">Interaction rate</span>
+            <span className="text-[10px] text-[#7B726C] block mt-1">Interaction rate</span>
           </div>
         </div>
       </div>
@@ -286,8 +291,8 @@ export const BrandCreatorViewPage: React.FC = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={`Send Collaboration Proposal to ${creator.display_name || profile.name}`}
-        description="Submit your campaign deliverables, target publishing deadline, and proposed compensation."
+        title={`Collaboration Proposal for ${creator.display_name || profile.name}`}
+        description="Submit your campaign deliverables, target publishing deadline, and proposed commercial fee."
         maxWidth="lg"
       >
         <form onSubmit={handleSendEnquiry} className="space-y-4">
@@ -350,9 +355,9 @@ export const BrandCreatorViewPage: React.FC = () => {
             <Button
               type="submit"
               loading={sending}
-              className="bg-brand-900 hover:bg-black text-white gap-1.5"
+              className="gap-1.5"
             >
-              <Send className="w-3.5 h-3.5" />
+              <Send className="w-3.5 h-3.5 text-[#B49A70]" />
               <span>Send Campaign Proposal</span>
             </Button>
           </div>

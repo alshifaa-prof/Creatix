@@ -4,8 +4,14 @@
 
 @layer base {
   body {
-    @apply bg-surface-50 text-stone-900 font-sans antialiased;
+    @apply bg-[#FAF7F2] text-[#171514] font-sans antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    letter-spacing: -0.011em;
+  }
+
+  h1, h2, h3, h4, .font-editorial {
+    font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+    letter-spacing: -0.02em;
   }
 
   /* Ensure numbers line up in financial tables and stats */
@@ -14,8 +20,33 @@
   }
 }
 
+/* Editorial micro-details */
+.editorial-kicker {
+  @apply text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70];
+}
+
+.editorial-divider {
+  @apply border-t border-[#D4C2AE]/50;
+}
+
 /* Subtle, clean focus rings and transitions */
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-  outline: 2px solid #1b4332;
+  outline: 2px solid #B49A70;
   outline-offset: 2px;
+}
+
+/* Refined custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4C2AE;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B49A70;
 }

@@ -12,6 +12,7 @@ import {
   Bookmark,
   MapPin,
   ExternalLink,
+  Sparkles,
 } from 'lucide-react';
 
 const NICHES = [
@@ -115,27 +116,33 @@ export const BrandDiscoverPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 w-full">
       {/* Header */}
-      <div className="pb-4 border-b border-stone-200">
-        <h1 className="text-2xl font-serif font-bold text-stone-900">Discover Indian Creators</h1>
-        <p className="text-xs text-stone-500 mt-1">
-          Explore vetted digital creators by niche, audience reach, and content specialisation.
+      <div className="pb-6 border-b border-[#D4C2AE]/60">
+        <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] mb-1">
+          <Sparkles className="w-3 h-3 text-[#B49A70]" />
+          02 / Creator Directory
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#171514] tracking-tight">
+          Discover Indian Creators
+        </h1>
+        <p className="text-xs text-[#5A534F] mt-1">
+          Explore vetted digital talent filtered by niche categories, follower scale, and engagement performance.
         </p>
       </div>
 
       {/* Filter & Search Bar (§5.5 FR-DISC-2 & FR-DISC-3) */}
-      <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs space-y-3">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="p-5 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {/* Search by display_name */}
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3 top-3 text-stone-400" />
+            <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-[#B49A70]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by creator name..."
-              className="w-full pl-9 pr-3 py-2 text-xs bg-surface-50 border border-stone-300 rounded-lg text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-stone-800"
+              className="w-full pl-10 pr-3.5 py-2.5 text-xs bg-[#FAF7F2] border border-[#D4C2AE] rounded-xl text-[#171514] placeholder:text-[#A9927A] focus:outline-none focus:border-[#B49A70] transition-colors"
             />
           </div>
 
@@ -144,7 +151,7 @@ export const BrandDiscoverPage: React.FC = () => {
             value={niche}
             onChange={(e) => setNiche(e.target.value)}
             options={NICHES.map((n) => ({ label: n, value: n }))}
-            className="text-xs py-2 bg-surface-50"
+            className="text-xs py-2.5 bg-[#FAF7F2] border-[#D4C2AE] rounded-xl"
           />
 
           {/* Platform Filter */}
@@ -156,7 +163,7 @@ export const BrandDiscoverPage: React.FC = () => {
               { label: 'Has Instagram', value: 'instagram' },
               { label: 'Has YouTube', value: 'youtube' },
             ]}
-            className="text-xs py-2 bg-surface-50"
+            className="text-xs py-2.5 bg-[#FAF7F2] border-[#D4C2AE] rounded-xl"
           />
 
           {/* Follower Range Filter */}
@@ -164,17 +171,17 @@ export const BrandDiscoverPage: React.FC = () => {
             value={followerRange}
             onChange={(e) => setFollowerRange(e.target.value)}
             options={FOLLOWER_RANGES}
-            className="text-xs py-2 bg-surface-50"
+            className="text-xs py-2.5 bg-[#FAF7F2] border-[#D4C2AE] rounded-xl"
           />
         </div>
       </div>
 
       {/* Creator Cards Grid (§5.5 FR-DISC-4) */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <Skeleton className="h-64 rounded-xl" />
-          <Skeleton className="h-64 rounded-xl" />
-          <Skeleton className="h-64 rounded-xl" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Skeleton className="h-72 rounded-2xl" />
+          <Skeleton className="h-72 rounded-2xl" />
+          <Skeleton className="h-72 rounded-2xl" />
         </div>
       ) : creators.length === 0 ? (
         <EmptyState
@@ -185,7 +192,7 @@ export const BrandDiscoverPage: React.FC = () => {
           onAction={clearFilters}
         />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {creators.map(({ profile, creator }) => {
             const isShortlisted = shortlistedIds.includes(creator.user_id);
 
@@ -193,28 +200,28 @@ export const BrandDiscoverPage: React.FC = () => {
               <div
                 key={creator.user_id}
                 onClick={() => navigate(`/brand/creators/${creator.user_id}`)}
-                className="bg-white border border-stone-200 rounded-xl p-5 shadow-xs hover:border-stone-400 hover:shadow-md cursor-pointer transition-all flex flex-col justify-between group relative"
+                className="bg-white border border-[#D4C2AE] rounded-2xl p-6 shadow-luxury hover:border-[#B49A70] hover:shadow-luxury-lg cursor-pointer transition-all flex flex-col justify-between group relative"
               >
                 <div>
                   {/* Top Bar with Avatar and Shortlist Button */}
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-start justify-between gap-3 mb-3.5">
+                    <div className="flex items-center gap-3.5">
                       {creator.profile_image_url ? (
                         <img
                           src={creator.profile_image_url}
                           alt={creator.display_name || profile.name || ''}
-                          className="w-13 h-13 rounded-full object-cover border border-stone-200 shadow-2xs"
+                          className="w-13 h-13 rounded-2xl object-cover border border-[#D4C2AE] shadow-xs"
                         />
                       ) : (
-                        <div className="w-13 h-13 rounded-full bg-surface-200 flex items-center justify-center font-serif font-bold text-lg text-stone-700 border border-stone-300">
+                        <div className="w-13 h-13 rounded-2xl bg-[#F3EAE0] flex items-center justify-center font-serif font-bold text-xl text-[#171514] border border-[#D4C2AE]">
                           {(creator.display_name || profile.name || 'C')[0]}
                         </div>
                       )}
                       <div>
-                        <h3 className="font-bold text-sm text-stone-900 group-hover:text-brand-900 transition-colors">
+                        <h3 className="font-serif font-bold text-base text-[#171514] group-hover:text-[#B49A70] transition-colors leading-tight">
                           {creator.display_name || profile.name}
                         </h3>
-                        <span className="inline-block text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full mt-0.5 border border-emerald-200">
+                        <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-[#7A6440] bg-[#F4ECE1] px-2.5 py-0.5 rounded-full mt-1 border border-[#DEC6A5]">
                           {creator.niche}
                         </span>
                       </div>
@@ -224,56 +231,56 @@ export const BrandDiscoverPage: React.FC = () => {
                       type="button"
                       onClick={(e) => handleToggleShortlist(creator.user_id, e)}
                       title={isShortlisted ? 'Remove from shortlist' : 'Add to shortlist'}
-                      className={`p-2 rounded-lg border transition-colors ${
+                      className={`p-2 rounded-xl border transition-colors ${
                         isShortlisted
-                          ? 'bg-amber-50 text-amber-800 border-amber-300'
-                          : 'bg-white text-stone-400 hover:text-stone-700 border-stone-200 hover:bg-stone-50'
+                          ? 'bg-[#F3EAE0] text-[#7A6440] border-[#B49A70]'
+                          : 'bg-white text-[#A9927A] hover:text-[#171514] border-[#D4C2AE] hover:bg-[#FAF7F2]'
                       }`}
                     >
-                      <Bookmark className={`w-4 h-4 ${isShortlisted ? 'fill-amber-600' : ''}`} />
+                      <Bookmark className={`w-4 h-4 ${isShortlisted ? 'fill-[#B49A70] text-[#B49A70]' : ''}`} />
                     </button>
                   </div>
 
                   {creator.location && (
-                    <p className="text-[11px] text-stone-500 flex items-center gap-1 mb-2">
-                      <MapPin className="w-3 h-3" />
+                    <p className="text-[11px] text-[#7B726C] flex items-center gap-1.5 mb-2.5">
+                      <MapPin className="w-3.5 h-3.5 text-[#B49A70]" />
                       {creator.location}
                     </p>
                   )}
 
                   {creator.bio && (
-                    <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed mb-4">
+                    <p className="text-xs text-[#5A534F] line-clamp-2 leading-relaxed mb-4">
                       {creator.bio}
                     </p>
                   )}
                 </div>
 
                 {/* Metrics Bar with Self-reported label (§5.5 FR-DISC-4) */}
-                <div className="pt-3 border-t border-stone-100">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] text-stone-400 uppercase tracking-wider">
+                <div className="pt-3.5 border-t border-[#D4C2AE]/50">
+                  <div className="flex items-center justify-between mb-2.5">
+                    <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-wider">
                       Audience Size
                     </span>
                     <SelfReportedBadge />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-center">
-                    <div className="bg-surface-50 p-2 rounded-lg border border-stone-100">
-                      <span className="text-xs font-bold font-mono-numbers text-stone-900 block">
+                  <div className="grid grid-cols-2 gap-2.5 text-center">
+                    <div className="bg-[#FAF7F2] p-2.5 rounded-xl border border-[#D4C2AE]/60">
+                      <span className="text-sm font-serif font-bold font-mono-numbers text-[#171514] block">
                         {(creator.follower_count || 0).toLocaleString('en-IN')}
                       </span>
-                      <span className="text-[10px] text-stone-400">IG Followers</span>
+                      <span className="text-[10px] text-[#7B726C]">IG Followers</span>
                     </div>
 
-                    <div className="bg-surface-50 p-2 rounded-lg border border-stone-100">
-                      <span className="text-xs font-bold font-mono-numbers text-stone-900 block">
+                    <div className="bg-[#FAF7F2] p-2.5 rounded-xl border border-[#D4C2AE]/60">
+                      <span className="text-sm font-serif font-bold font-mono-numbers text-[#171514] block">
                         {creator.engagement_rate || 0}%
                       </span>
-                      <span className="text-[10px] text-stone-400">Engagement</span>
+                      <span className="text-[10px] text-[#7B726C]">Engagement</span>
                     </div>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between text-xs text-brand-900 font-semibold pt-1">
+                  <div className="mt-3.5 flex items-center justify-between text-xs text-[#171514] group-hover:text-[#B49A70] font-semibold pt-1 transition-colors">
                     <span>View Profile & Pitch</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </div>

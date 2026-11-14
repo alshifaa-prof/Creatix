@@ -37,58 +37,61 @@ export const SignupPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-[#faf9f5]">
+    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-[#FAF7F2] text-[#171514]">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Link to="/" className="inline-flex items-center gap-2 mb-4">
-          <span className="w-9 h-9 rounded-lg bg-creator-900 flex items-center justify-center text-white font-serif font-bold text-xl shadow-xs">
+        <Link to="/" className="inline-flex items-center gap-3 mb-5 group">
+          <span className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#B49A70] to-[#7A6440] flex items-center justify-center text-[#171514] font-serif font-bold text-2xl shadow-luxury group-hover:scale-105 transition-transform">
             C
           </span>
-          <span className="font-serif font-bold text-2xl tracking-tight text-stone-900">
+          <span className="font-serif font-bold text-3xl tracking-tight text-[#171514]">
             Creatix
           </span>
         </Link>
-        <h2 className="text-xl font-bold tracking-tight text-stone-900">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B49A70] block mb-1">
+          01 / Onboarding
+        </span>
+        <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-[#171514]">
           Create your Creatix account
         </h2>
-        <p className="mt-1 text-xs text-stone-500">
+        <p className="mt-1.5 text-xs text-[#5A534F]">
           Join India's dedicated creator-brand collaboration platform.
         </p>
       </div>
 
-      <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md px-4">
-        <div className="bg-white py-8 px-6 shadow-sm border border-stone-200 rounded-xl sm:px-10">
+      <div className="mt-7 sm:mx-auto sm:w-full sm:max-w-md px-4">
+        <div className="bg-white py-9 px-6 sm:px-10 shadow-luxury-lg border border-[#D4C2AE] rounded-2xl">
           {/* Role Selector (§4, §5.1) */}
           <div className="mb-6">
-            <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
+            <label className="block text-[11px] font-semibold text-[#5A534F] uppercase tracking-[0.08em] mb-2.5">
               Select Your Role
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setRole('creator')}
-                className={`p-3 rounded-lg border text-left transition-all flex flex-col gap-1 ${
+                className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1.5 ${
                   role === 'creator'
-                    ? 'border-creator-900 bg-emerald-50/50 ring-1 ring-creator-900'
-                    : 'border-stone-200 hover:border-stone-300 bg-white'
+                    ? 'border-[#B49A70] bg-[#F3EAE0] ring-1 ring-[#B49A70]'
+                    : 'border-[#D4C2AE] hover:border-[#B49A70]/60 bg-white'
                 }`}
               >
-                <Palette className={`w-4 h-4 ${role === 'creator' ? 'text-creator-900' : 'text-stone-400'}`} />
-                <span className="text-xs font-bold text-stone-900">Creator</span>
-                <span className="text-[10px] text-stone-500">Manage deals, contracts & profit</span>
+                <Palette className={`w-4 h-4 ${role === 'creator' ? 'text-[#171514]' : 'text-[#7B726C]'}`} />
+                <span className="text-sm font-serif font-bold text-[#171514]">Creator</span>
+                <span className="text-[10px] text-[#7B726C] leading-tight">Manage deals, contracts & profit</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setRole('brand')}
-                className={`p-3 rounded-lg border text-left transition-all flex flex-col gap-1 ${
+                className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1.5 ${
                   role === 'brand'
-                    ? 'border-brand-900 bg-blue-50/50 ring-1 ring-brand-900'
-                    : 'border-stone-200 hover:border-stone-300 bg-white'
+                    ? 'border-[#B49A70] bg-[#F3EAE0] ring-1 ring-[#B49A70]'
+                    : 'border-[#D4C2AE] hover:border-[#B49A70]/60 bg-white'
                 }`}
               >
-                <Building2 className={`w-4 h-4 ${role === 'brand' ? 'text-brand-900' : 'text-stone-400'}`} />
-                <span className="text-xs font-bold text-stone-900">Brand / Agency</span>
-                <span className="text-[10px] text-stone-500">Discover creators & send proposals</span>
+                <Building2 className={`w-4 h-4 ${role === 'brand' ? 'text-[#171514]' : 'text-[#7B726C]'}`} />
+                <span className="text-sm font-serif font-bold text-[#171514]">Brand / Agency</span>
+                <span className="text-[10px] text-[#7B726C] leading-tight">Discover talent & send briefs</span>
               </button>
             </div>
           </div>
@@ -126,9 +129,9 @@ export const SignupPage: React.FC = () => {
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-xs text-stone-500">
+          <div className="mt-6 text-center text-xs text-[#5A534F]">
             Already have an account?{' '}
-            <Link to="/login" className="font-semibold text-creator-900 hover:underline">
+            <Link to="/login" className="font-semibold text-[#171514] hover:text-[#B49A70] hover:underline transition-colors">
               Sign In
             </Link>
           </div>

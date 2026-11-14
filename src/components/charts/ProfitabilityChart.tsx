@@ -15,8 +15,8 @@ import { formatINR } from '../../lib/format';
 export const ProfitabilityChart: React.FC<{ data: CollaborationProfitability[] }> = ({ data }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="h-64 flex flex-col items-center justify-center text-center p-6 border border-dashed border-stone-200 rounded-xl bg-white/40">
-        <p className="text-xs text-stone-500">
+      <div className="h-64 flex flex-col items-center justify-center text-center p-6 border border-dashed border-[#D4C2AE] rounded-xl bg-[#FAF7F2]/60">
+        <p className="text-xs text-[#7B726C]">
           No collaboration records linked to financial transactions yet.
         </p>
       </div>
@@ -34,15 +34,15 @@ export const ProfitabilityChart: React.FC<{ data: CollaborationProfitability[] }
     <div className="h-72 w-full pt-2">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e8e5db" vertical={false} />
+          <CartesianGrid strokeDasharray="2 2" stroke="#EAE1D6" vertical={false} />
           <XAxis
             dataKey="shortTitle"
-            tick={{ fontSize: 11, fill: '#78716c' }}
+            tick={{ fontSize: 11, fill: '#7B726C', fontFamily: 'DM Sans, sans-serif' }}
             tickLine={false}
-            axisLine={{ stroke: '#e8e5db' }}
+            axisLine={{ stroke: '#D4C2AE' }}
           />
           <YAxis
-            tick={{ fontSize: 11, fill: '#78716c' }}
+            tick={{ fontSize: 11, fill: '#7B726C', fontFamily: 'JetBrains Mono, monospace' }}
             tickLine={false}
             axisLine={false}
             tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
@@ -52,26 +52,26 @@ export const ProfitabilityChart: React.FC<{ data: CollaborationProfitability[] }
               if (active && payload && payload.length) {
                 const item = payload[0].payload as CollaborationProfitability;
                 return (
-                  <div className="bg-white border border-stone-200 p-3 rounded-lg shadow-md text-xs font-sans">
-                    <p className="font-bold text-stone-900 mb-0.5">{item.campaignTitle}</p>
-                    <p className="text-[10px] text-stone-500 mb-2">{item.brandName}</p>
+                  <div className="bg-[#FAF7F2] border border-[#D4C2AE] p-3.5 rounded-xl shadow-luxury text-xs font-sans">
+                    <p className="font-serif font-bold text-sm text-[#171514] mb-0.5">{item.campaignTitle}</p>
+                    <p className="text-[10px] text-[#7B726C] mb-2 uppercase tracking-wider">{item.brandName}</p>
                     <div className="flex items-center justify-between gap-4 py-0.5">
-                      <span className="text-stone-600">Received Income:</span>
-                      <span className="font-bold font-mono-numbers text-stone-900">
+                      <span className="text-[#5A534F]">Received Income:</span>
+                      <span className="font-bold font-mono-numbers text-[#171514]">
                         {formatINR(item.income)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-4 py-0.5">
-                      <span className="text-stone-600">Expenses:</span>
-                      <span className="font-bold font-mono-numbers text-stone-900">
+                      <span className="text-[#5A534F]">Expenses:</span>
+                      <span className="font-bold font-mono-numbers text-[#A85F48]">
                         {formatINR(item.expenses)}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between gap-4 py-0.5 border-t border-stone-100 mt-1 pt-1">
-                      <span className="font-bold text-stone-900">Net Profit:</span>
+                    <div className="flex items-center justify-between gap-4 py-0.5 border-t border-[#D4C2AE]/60 mt-1.5 pt-1.5">
+                      <span className="font-bold text-[#171514]">Net Profit:</span>
                       <span
                         className={`font-bold font-mono-numbers ${
-                          item.net < 0 ? 'text-rose-600' : 'text-creator-900'
+                          item.net < 0 ? 'text-[#A85F48]' : 'text-[#2D6A4F]'
                         }`}
                       >
                         {formatINR(item.net)}
@@ -87,11 +87,11 @@ export const ProfitabilityChart: React.FC<{ data: CollaborationProfitability[] }
             verticalAlign="top"
             height={36}
             iconType="circle"
-            wrapperStyle={{ fontSize: '11px', color: '#57534e' }}
+            wrapperStyle={{ fontSize: '11px', color: '#5A534F', fontFamily: 'DM Sans, sans-serif' }}
           />
-          <Bar dataKey="income" name="Received Income" fill="#1b4332" radius={[4, 4, 0, 0]} maxBarSize={28} />
-          <Bar dataKey="expenses" name="Expenses" fill="#e11d48" radius={[4, 4, 0, 0]} maxBarSize={28} />
-          <Bar dataKey="net" name="Net Profit" fill="#d97706" radius={[4, 4, 0, 0]} maxBarSize={28} />
+          <Bar dataKey="income" name="Received Income" fill="#171514" radius={[4, 4, 0, 0]} maxBarSize={28} />
+          <Bar dataKey="expenses" name="Expenses" fill="#A85F48" radius={[4, 4, 0, 0]} maxBarSize={28} />
+          <Bar dataKey="net" name="Net Profit" fill="#B49A70" radius={[4, 4, 0, 0]} maxBarSize={28} />
         </BarChart>
       </ResponsiveContainer>
     </div>

@@ -65,7 +65,7 @@ export interface CreatixApi {
   // Contracts & AI Intelligence
   getContracts(creatorId: string): Promise<ContractDocument[]>;
   getContractById(id: string): Promise<ContractDocument | null>;
-  uploadContract(creatorId: string, file: File): Promise<ContractDocument>;
+  uploadContract(creatorId: string, file: File, extractedText?: string): Promise<ContractDocument>;
   analyzeContract(contractId: string, manualText?: string): Promise<ExtractedTerms>;
   confirmContractTerms(
     contractId: string,

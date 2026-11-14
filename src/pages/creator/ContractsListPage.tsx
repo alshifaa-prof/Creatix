@@ -7,6 +7,7 @@ import { formatDate } from '../../lib/format';
 import { Button } from '../../components/ui/Button';
 import { EmptyState, Skeleton } from '../../components/ui/EmptyState';
 import toast from 'react-hot-toast';
+import { extractTextFromPdf } from '../../lib/pdfExtractor';
 import {
   FileText,
   UploadCloud,
@@ -59,7 +60,18 @@ export const ContractsListPage: React.FC = () => {
 
     try {
       setUploading(true);
-      const newDoc = await api.uploadContract(user.id, file);
+      let extractedText = '';
+      try {
+        const pdfResult = await extractTextFromPdf(file);
+        extractedText = pdfResult.text;
+        if (pdfResult.isLikelyScanned) {
+          toast('Contract appears scanned (low text count). You can also edit terms manually.', { icon: 'ℹ️' });
+        }
+      } catch (pdfErr) {
+        console.warn('PDF text extraction fallback:', pdfErr);
+      }
+
+      const newDoc = await api.uploadContract(user.id, file, extractedText);
       toast.success('Contract uploaded! Opening AI review screen...');
       navigate(`/creator/contracts/${newDoc.id}`);
     } catch (err: any) {
@@ -73,20 +85,26 @@ export const ContractsListPage: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-4 max-w-4xl">
-        <Skeleton className="h-10 w-48" />
-        <Skeleton className="h-32 w-full" />
+        <Skeleton className="h-12 w-64 rounded-2xl" />
+        <Skeleton className="h-40 w-full rounded-2xl" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-4xl space-y-8 w-full">
       {/* Title & Action Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#D4C2AE]/60">
         <div>
-          <h1 className="text-2xl font-serif font-bold text-stone-900">Contract Intelligence</h1>
-          <p className="text-xs text-stone-500 mt-1">
-            Upload PDF agreements for instant plain-language summaries and clause flagging.
+          <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] mb-1">
+            <Sparkles className="w-3 h-3 text-[#B49A70]" />
+            05 / Legal & AI Audit
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#171514] tracking-tight">
+            AI Contract Intelligence
+          </h1>
+          <p className="text-xs text-[#5A534F] mt-1">
+            Upload PDF brand agreements for instant plain-language term extraction, risk clause flagging, and deal synchronization.
           </p>
         </div>
 
@@ -104,17 +122,20 @@ export const ContractsListPage: React.FC = () => {
             loading={uploading}
             className="gap-2"
           >
-            <UploadCloud className="w-4 h-4" />
+            <UploadCloud className="w-4 h-4 text-[#B49A70]" />
             <span>Upload Contract PDF</span>
           </Button>
         </div>
       </div>
 
       {/* AI Intelligence Explainer Banner */}
-      <div className="p-4 rounded-xl bg-creator-50 border border-creator-100 flex items-start gap-3">
-        <Sparkles className="w-4 h-4 text-creator-900 shrink-0 mt-0.5" />
-        <div className="text-xs text-stone-700 leading-relaxed">
-          <strong>How it works:</strong> We extract terms from your PDF, flag restrictive clauses (long exclusivity, broad ad usage rights), and format payment milestones so you can link them directly to collaboration deals.
+      <div className="p-5 rounded-2xl bg-[#171514] text-[#FAF7F2] border border-[#282422] shadow-luxury flex items-start gap-4">
+        <div className="w-8 h-8 rounded-lg bg-[#B49A70]/20 flex items-center justify-center text-[#B49A70] shrink-0 mt-0.5">
+          <Sparkles className="w-4 h-4" />
+        </div>
+        <div className="text-xs text-[#A9927A] leading-relaxed">
+          <strong className="text-white font-serif text-sm block mb-0.5">How Contract Review Works</strong>
+          We extract key milestones from your PDF agreement, flag restrictive covenants (extended exclusivity, broad perpetual advertising rights), and format payment schedules so you can link them directly to collaboration deals.
         </div>
       </div>
 
@@ -128,7 +149,7 @@ export const ContractsListPage: React.FC = () => {
           onAction={() => fileInputRef.current?.click()}
         />
       ) : (
-        <div className="bg-white border border-stone-200 rounded-xl shadow-xs divide-y divide-stone-100 overflow-hidden">
+        <div className="bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury divide-y divide-[#D4C2AE]/40 overflow-hidden">
           {contracts.map((doc) => {
             const isConfirmed = doc.review_status === 'confirmed';
 
@@ -136,21 +157,21 @@ export const ContractsListPage: React.FC = () => {
               <div
                 key={doc.id}
                 onClick={() => navigate(`/creator/contracts/${doc.id}`)}
-                className="p-4 sm:p-5 flex items-center justify-between hover:bg-surface-50 cursor-pointer transition-colors gap-4"
+                className="p-5 sm:p-6 flex items-center justify-between hover:bg-[#FAF7F2] cursor-pointer transition-colors gap-4"
               >
-                <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="w-10 h-10 rounded-lg bg-surface-100 border border-stone-200/80 flex items-center justify-center text-creator-900 shrink-0">
-                    <FileText className="w-5 h-5" />
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 rounded-xl bg-[#F3EAE0] border border-[#D4C2AE] flex items-center justify-center text-[#171514] shrink-0">
+                    <FileText className="w-5 h-5 text-[#B49A70]" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-stone-900 truncate">
+                    <p className="text-base font-serif font-bold text-[#171514] truncate">
                       {doc.original_filename || 'Collaboration Agreement.pdf'}
                     </p>
-                    <div className="flex items-center gap-2 mt-0.5 text-xs text-stone-500 font-mono-numbers">
+                    <div className="flex items-center gap-3 mt-1 text-xs text-[#7B726C] font-mono">
                       <span>Uploaded {formatDate(doc.uploaded_at)}</span>
                       {doc.ai_flags && doc.ai_flags.length > 0 && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-rose-700 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200">
-                          <ShieldAlert className="w-2.5 h-2.5" />
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#A85F48] bg-[#FAF3F1] px-2 py-0.5 rounded-full border border-[#E7C2B9]">
+                          <ShieldAlert className="w-3 h-3" />
                           {doc.ai_flags.length} Flagged Clauses
                         </span>
                       )}
@@ -160,15 +181,15 @@ export const ContractsListPage: React.FC = () => {
 
                 <div className="flex items-center gap-3 shrink-0">
                   <span
-                    className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
+                    className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
                       isConfirmed
-                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                        : 'bg-amber-50 text-amber-800 border-amber-200'
+                        ? 'bg-[#E2F1E9] text-[#1E4936] border-[#B7DAC7]'
+                        : 'bg-[#F4ECE1] text-[#7A6440] border-[#DEC6A5]'
                     }`}
                   >
                     {isConfirmed ? 'Confirmed' : 'Needs Review'}
                   </span>
-                  <ChevronRight className="w-4 h-4 text-stone-400" />
+                  <ChevronRight className="w-4 h-4 text-[#A9927A]" />
                 </div>
               </div>
             );

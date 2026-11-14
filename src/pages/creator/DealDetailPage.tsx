@@ -19,6 +19,7 @@ import {
   ArrowLeft,
   Trash2,
   FileText,
+  Sparkles,
 } from 'lucide-react';
 
 const DEAL_STATUS_OPTIONS = [
@@ -179,29 +180,33 @@ export const DealDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-6 max-w-4xl">
-        <Skeleton className="h-10 w-48" />
-        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-12 w-64 rounded-2xl" />
+        <Skeleton className="h-72 w-full rounded-2xl" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-4xl space-y-8 w-full">
       {/* Top Bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-stone-200">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between pb-6 border-b border-[#D4C2AE]/60">
+        <div className="flex items-center gap-4">
           <Link
             to="/creator/deals"
-            className="p-1.5 rounded-lg border border-stone-200 bg-white hover:bg-stone-50 text-stone-600 transition-colors"
+            className="p-2 rounded-xl border border-[#D4C2AE] bg-white hover:bg-[#FAF7F2] text-[#171514] transition-colors shadow-xs"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <div>
-            <h1 className="text-xl font-serif font-bold text-stone-900">
+            <div className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] mb-0.5">
+              <Sparkles className="w-3 h-3 text-[#B49A70]" />
+              {isNew ? '03 / New Deal' : '03 / Deal Workspace'}
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171514] tracking-tight">
               {isNew ? 'Create New Collaboration' : deal.campaign_title || 'Edit Deal'}
             </h1>
-            <p className="text-xs text-stone-500">
-              {isNew ? 'Define brand terms, payment and expected deliverables.' : deal.brand_name}
+            <p className="text-xs text-[#5A534F]">
+              {isNew ? 'Define brand terms, payment terms, and expected deliverables.' : deal.brand_name}
             </p>
           </div>
         </div>
@@ -211,7 +216,7 @@ export const DealDetailPage: React.FC = () => {
             variant="outline"
             size="sm"
             onClick={() => setShowDeleteModal(true)}
-            className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200"
+            className="text-[#A85F48] hover:text-[#8F4E3A] hover:bg-[#FAF3F1] border-[#E7C2B9]"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Delete Deal</span>
@@ -222,50 +227,55 @@ export const DealDetailPage: React.FC = () => {
       {/* Deal Profitability Quick Card (§5.3 FR-DEAL-5) */}
       {!isNew && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+          <div className="p-5 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury">
+            <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
               Deal Received Income
             </span>
-            <span className="text-xl font-bold font-mono-numbers text-stone-900 block mt-1">
+            <span className="text-2xl font-serif font-bold font-mono-numbers text-[#171514] block mt-1">
               {formatINR(dealReceivedIncome)}
             </span>
-            <span className="text-[10px] text-stone-400 block mt-0.5">
+            <span className="text-[10px] text-[#7B726C] block mt-1 font-mono">
               Target: {formatINR(deal.payment_amount)}
             </span>
           </div>
 
-          <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+          <div className="p-5 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury">
+            <span className="text-[10px] font-bold text-[#7B726C] uppercase tracking-[0.18em] block">
               Linked Expenses
             </span>
-            <span className="text-xl font-bold font-mono-numbers text-stone-900 block mt-1">
+            <span className="text-2xl font-serif font-bold font-mono-numbers text-[#A85F48] block mt-1">
               {formatINR(dealExpenses)}
             </span>
-            <span className="text-[10px] text-stone-400 block mt-0.5">Production costs</span>
+            <span className="text-[10px] text-[#7B726C] block mt-1 font-mono">Production costs</span>
           </div>
 
-          <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
-            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+          <div className="p-5 bg-[#F3EAE0] border border-[#D4C2AE] rounded-2xl shadow-luxury">
+            <span className="text-[10px] font-bold text-[#7A6440] uppercase tracking-[0.18em] block">
               Deal Net Profit
             </span>
             <span
-              className={`text-xl font-bold font-mono-numbers block mt-1 ${
-                dealNetProfit < 0 ? 'text-rose-600' : 'text-creator-900'
+              className={`text-2xl font-serif font-bold font-mono-numbers block mt-1 ${
+                dealNetProfit < 0 ? 'text-[#A85F48]' : 'text-[#1E4936]'
               }`}
             >
               {formatINR(dealNetProfit)}
             </span>
-            <span className="text-[10px] text-stone-400 block mt-0.5">Income − Expenses</span>
+            <span className="text-[10px] text-[#7B726C] block mt-1 font-mono">Income − Expenses</span>
           </div>
         </div>
       )}
 
       {/* Main Deal Form */}
       <form onSubmit={handleSave} className="space-y-6">
-        <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-4">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-            Deal Essentials
-          </h2>
+        <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury space-y-4">
+          <div className="pb-3 border-b border-[#D4C2AE]/50">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Specifications
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514]">
+              Deal Essentials
+            </h2>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
@@ -329,10 +339,15 @@ export const DealDetailPage: React.FC = () => {
         </div>
 
         {/* Deadlines & Dates */}
-        <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-4">
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
-            Milestones & Deadlines
-          </h2>
+        <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury space-y-4">
+          <div className="pb-3 border-b border-[#D4C2AE]/50">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+              Timeline
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#171514]">
+              Milestones & Deadlines
+            </h2>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
@@ -363,16 +378,21 @@ export const DealDetailPage: React.FC = () => {
 
         {/* Linked Contract Document */}
         {!isNew && (
-          <div className="p-6 bg-white border border-stone-200 rounded-xl space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider flex items-center gap-1.5">
-                <FileText className="w-4 h-4 text-creator-900" />
-                Linked Contract Document
-              </h2>
+          <div className="p-6 sm:p-7 bg-white border border-[#D4C2AE] rounded-2xl shadow-luxury space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#D4C2AE]/50">
+              <div>
+                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#B49A70] block">
+                  Document Audit
+                </span>
+                <h2 className="text-xl font-serif font-bold text-[#171514] flex items-center gap-1.5">
+                  <FileText className="w-4 h-4 text-[#B49A70]" />
+                  Linked Contract Document
+                </h2>
+              </div>
               {linkedContract && (
                 <Link
                   to={`/creator/contracts/${linkedContract.id}`}
-                  className="text-xs font-semibold text-creator-900 hover:underline"
+                  className="text-xs font-semibold text-[#171514] hover:text-[#B49A70] hover:underline"
                 >
                   View Contract Details →
                 </Link>
@@ -380,21 +400,21 @@ export const DealDetailPage: React.FC = () => {
             </div>
 
             {linkedContract ? (
-              <div className="p-4 rounded-lg bg-surface-50 border border-stone-200/80 flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#D4C2AE] flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold text-stone-900">{linkedContract.original_filename}</p>
-                  <p className="text-[11px] text-stone-500 mt-0.5">
-                    Status: <span className="font-semibold uppercase">{linkedContract.review_status}</span>
+                  <p className="text-xs font-serif font-bold text-[#171514]">{linkedContract.original_filename}</p>
+                  <p className="text-[11px] text-[#7B726C] mt-0.5">
+                    Status: <span className="font-semibold uppercase tracking-wider">{linkedContract.review_status}</span>
                   </p>
                 </div>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#E2F1E9] text-[#1E4936] border border-[#B7DAC7] uppercase">
                   AI Analyzed
                 </span>
               </div>
             ) : (
-              <p className="text-xs text-stone-500">
+              <p className="text-xs text-[#7B726C] italic">
                 No contract linked to this deal yet. You can upload a contract in the{' '}
-                <Link to="/creator/contracts" className="font-semibold text-creator-900 hover:underline">
+                <Link to="/creator/contracts" className="font-semibold text-[#171514] hover:underline">
                   Contracts section
                 </Link>
                 .
@@ -403,7 +423,7 @@ export const DealDetailPage: React.FC = () => {
           </div>
         )}
 
-        <div className="flex justify-end gap-3 pt-2">
+        <div className="flex justify-end gap-3 pt-3">
           <Button variant="outline" type="button" onClick={() => navigate('/creator/deals')}>
             Cancel
           </Button>
